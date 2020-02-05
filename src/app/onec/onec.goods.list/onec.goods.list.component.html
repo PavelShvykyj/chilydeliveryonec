@@ -1,0 +1,10 @@
+<lenta-toolbar dataSourse=ds (OnElementClicked)="OnLentaElementClicked($event)"></lenta-toolbar> 
+
+  <mat-selection-list #goods>
+    <mat-list-option *ngFor="let item of (elements$ | async)">
+      {{item.name}}
+    </mat-list-option>
+  </mat-selection-list>
+  <p>
+    Выбрано : {{goods.selectedOptions.selected.length}}
+  </p>
