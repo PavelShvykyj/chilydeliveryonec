@@ -35,7 +35,7 @@ $non : transparent;
   @include lable($dark, $light)
 }
 
-.lablefirstlast {
+.lablesecondlast {
   @include lable($non, $dark)
 }
 
@@ -74,4 +74,11 @@ $non : transparent;
 
 .spacer {
   margin-left: auto !important;
+}
+
+.command {
+  margin-right: 4px;
+  &:hover {
+    background: $light;
+  }
 }

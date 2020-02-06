@@ -1,4 +1,19 @@
 <mat-toolbar fxLayout="row" class="maincontainer">
+  
+    <!-- <button  mat-raised-button class="command" *ngFor="let command of toolbarcommands"  >
+      <mat-icon>{{command.iconeName }}</mat-icon>
+      {{command.buttonName}}
+    </button> -->
+    
+    <mat-button-toggle-group class="command">
+      <mat-button-toggle  *ngFor="let command of toolbarcommands" [value]="command.commandName" (click)="ToolbarCommandClicked(command.commandName)">
+          <mat-icon>{{command.iconeName }}</mat-icon>
+          {{command.buttonName}}
+        </mat-button-toggle>
+    </mat-button-toggle-group>
+
+
+  
   <div fxFlex class="lentacontainer" (click)="ElementClicked(undefined)">
     <span fxFlex class="mainfirst"  >Root</span>
     <span fxFlex class="lablefirst" ></span>
@@ -7,6 +22,6 @@
     <span fxFlex [ngClass]="{mainfirst: item.parity, mainsecond: !item.parity}" >
       <span fxFlex class="maintext" >{{item.name}}</span> 
     </span>
-    <span fxFlex [ngClass]="{lablefirstlast: item.last && !item.parity, lablesecondlast: item.last && item.parity , lablefirst: item.parity, lablesecond: !item.parity}"  ></span>
+    <span fxFlex [ngClass]="{lablefirstlast: item.last && !item.parity, lablesecondlast: item.last && item.parity , lablefirst: !item.last && item.parity, lablesecond: !item.last && !item.parity}"  ></span>
   </div>
 </mat-toolbar>

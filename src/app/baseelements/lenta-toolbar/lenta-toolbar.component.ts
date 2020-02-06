@@ -1,3 +1,4 @@
+import { ITolbarCommandsList } from './../../models/toolbar.commandslist';
 import { IGoodsListDatasourse } from '../../models/goods.list.datasourse';
 import { IWEBGood } from '../../models/web.good';
 import { Component, OnInit, Input, ViewChild, Output, EventEmitter } from '@angular/core';
@@ -18,12 +19,16 @@ interface ILentaElement extends IBaseGood {
 })
 export class LentaToolbarComponent implements OnInit {
 
-  private lenta: ILentaElement[] = [];
+  lenta: ILentaElement[] = [];
   @Input('dataSourse') dataSourse: IGoodsListDatasourse;
+  @Input('toolbarcommands') toolbarcommands: ITolbarCommandsList[]=[];
+
   @Output('OnElementClicked') OnElementClicked = new EventEmitter<IBaseGood>();
+  @Output('OnToolbarCommandClicked') OnToolbarCommandClicked = new EventEmitter<string>();
+
 
   @ViewChild(LentaToolbarComponent)
-  private toolbar: LentaToolbarComponent;
+  toolbar: LentaToolbarComponent;
 
   constructor() { }
 
@@ -48,23 +53,33 @@ export class LentaToolbarComponent implements OnInit {
       return;
     } else {
       const newElemnt: ILentaElement = <ILentaElement>{
-        parity: !this.lenta[this.lenta.length].parity,
+        parity: !this.lenta[this.lenta.length-1].parity,
         last: true,
         ...item
       }
-      this.lenta[this.lenta.length].last = false;
+      this.lenta[this.lenta.length-1].last = false;
       this.lenta.push(newElemnt);
     }
+    
   }
 
   ElementClicked(item: ILentaElement | undefined) {
     if(item == undefined) {
       this.lenta = [];
     } else {
-      this.lenta.splice( this.lenta.indexOf(item));
+      this.lenta.splice( this.lenta.indexOf(item)+1);
+      if(this.lenta.length!=0) {
+        this.lenta[this.lenta.length-1].last=true;
+      }
     }
     
     this.OnElementClicked.emit(item); 
   }
+
+  ToolbarCommandClicked(commandName:string) {
+    
+    this.OnToolbarCommandClicked.emit(commandName);
+  } 
+
 
 }

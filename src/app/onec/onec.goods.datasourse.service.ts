@@ -12,13 +12,47 @@ export class OnecGoodsDatasourseService implements IGoodsListDatasourse{
   private dataEventer : BehaviorSubject<IONECGood[]> = new BehaviorSubject([]);
   public dataSourse$ : Observable<IONECGood[]> = this.dataEventer.asObservable();
 
+  private fake : IONECGood[] = [
+    {
+      isFolder:true,
+      parentid:undefined,
+      name: "fake folder 1",
+      filial: "vopak"
+    },
+
+    {
+      isFolder:true,
+      parentid:undefined,
+      name: "fake folder 2",
+      filial: "vopak"
+    },
+
+    {
+      isFolder:false,
+      parentid:undefined,
+      name: "fake item 1 with long name пица ароматная большая ням ням",
+      filial: "vopak"
+    },
+
+    {
+      isFolder:false,
+      parentid:undefined,
+      name: "fake item 2",
+      filial: "vopak"
+    }
+
+
+  ]
+
   constructor() { }
 
   GetList(parentID:string | undefined)  {
     if(xForm1C == undefined) {
-      this.dataEventer.next([]);
-    } else {
-      this.dataEventer.next(xForm1C.GetList(parentID));
+      this.dataEventer.next(this.fake);
+    } 
+    else {
+      const content: IONECGood[] =  JSON.parse(xForm1C.GetList(parentID)).goods;
+      this.dataEventer.next(content);
     }
   }
 }
