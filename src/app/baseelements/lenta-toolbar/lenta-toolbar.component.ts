@@ -33,9 +33,7 @@ export class LentaToolbarComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    this.lenta = [
-    ]
-
+    this.lenta = [];
   }
 
   AddElement(item: IBaseGood): void {
