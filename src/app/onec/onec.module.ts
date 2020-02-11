@@ -7,6 +7,8 @@ import { OnecGoodsDatasourseService } from './onec.goods.datasourse.service';
 
 import { OnecGoodsListComponent } from './onec.goods.list/onec.goods.list.component';
 import { MaterialsModule } from '../materials/materials.module';
+import { StoreModule } from '@ngrx/store';
+import * as fromOnec from './reducers';
 
 
 @NgModule({
@@ -14,7 +16,8 @@ import { MaterialsModule } from '../materials/materials.module';
   imports: [
     CommonModule,
     BaseelementsModule,
-    MaterialsModule
+    MaterialsModule,
+    StoreModule.forFeature(fromOnec.onecFeatureKey, fromOnec.reducers, { metaReducers: fromOnec.metaReducers })
   ],
   exports: [OnecGoodsListComponent],
   providers: [OnecGoodsDatasourseService]

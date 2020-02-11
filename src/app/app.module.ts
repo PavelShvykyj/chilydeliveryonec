@@ -18,6 +18,10 @@ import { AppComponent } from './app.component';
 import { FireService } from './services/fire.service';
 
 import { OnecModule } from './onec/onec.module';
+import { StoreModule } from '@ngrx/store';
+import { reducers, metaReducers } from './reducers';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+
 
 
 
@@ -40,7 +44,9 @@ import { OnecModule } from './onec/onec.module';
     AngularFirestoreModule,
     FlexLayoutModule,
     /////////////////   OWN CREATED
-    OnecModule
+    OnecModule,
+    StoreModule.forRoot(reducers, { metaReducers }),
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production })
 
   ], 
   providers: [FireService],
