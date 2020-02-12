@@ -17,28 +17,36 @@ export class OnecGoodsDatasourseService implements IGoodsListDatasourse{
       isFolder:true,
       parentid:undefined,
       name: "fake folder 1",
-      filial: "vopak"
+      filial: "vopak",
+      id:"1",
+      externalid:undefined
     },
 
     {
       isFolder:true,
       parentid:undefined,
       name: "fake folder long long name 2",
-      filial: "vopak"
+      filial: "vopak",
+      id:"2",
+      externalid:undefined
     },
 
     {
       isFolder:false,
       parentid:undefined,
       name: "fake item 1 with long name пица ароматная большая ням ням",
-      filial: "vopak"
+      filial: "vopak",
+      id:"3",
+      externalid:undefined
     },
 
     {
       isFolder:false,
       parentid:undefined,
       name: "fake item 2",
-      filial: "vopak"
+      filial: "vopak",
+      id:"4",
+      externalid:undefined
     }
 
 

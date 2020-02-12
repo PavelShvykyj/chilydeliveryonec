@@ -49,7 +49,7 @@ export class OnecGoodsListComponent implements OnInit {
 
   OnGoodClicked(item: IONECGood) {
     if(item.isFolder) {
-      this.ds.GetList(item.parentid);
+      this.ds.GetList(item.id);
       this.toolbar.AddElement(item);
     } else {
       
@@ -66,7 +66,7 @@ export class OnecGoodsListComponent implements OnInit {
     if(event == undefined) {
       this.ds.GetList(undefined);
     } else {
-      this.ds.GetList(event.parentid);
+      this.ds.GetList(event.id);
     }
     
   }
