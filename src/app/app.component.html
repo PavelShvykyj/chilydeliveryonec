@@ -1,32 +1,26 @@
 <mat-toolbar color='primary'>
   <span>Simple delivery (one c) </span>
-  <span class="spacer">   </span>
-  <button color='accent' mat-raised-button  (click)="Test1C()"> test 1C </button>
+
+  <span class="spacer"> </span>
+  <mat-nav-list  fxLayout="row" >
+    <mat-list-item fxFlex>
+      <a matLine routerLink="/login" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"><mat-icon>info</mat-icon> Login  </a>
+    </mat-list-item>
+    
+
+    <mat-list-item fxFlex>
+      <a matLine routerLink="/goods" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"><mat-icon>info</mat-icon> Goods  </a>
+    </mat-list-item>
+
+    <mat-list-item fxFlex>
+      <a matLine routerLink="/orders" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"><mat-icon>info</mat-icon> Orders </a>
+    </mat-list-item>
+  </mat-nav-list>
+
+
+  <span class="spacer"> </span>
+  <button color='accent' mat-raised-button (click)="LogOut()"> Logout </button>
 </mat-toolbar>
-
-<mat-card class="example-card">
-  <mat-card-header>
-    <mat-card-title class="title-small">Пример формы </mat-card-title>
-    <mat-card-subtitle>Список получен из сервиса </mat-card-subtitle>
-    <mat-icon>format_align_left</mat-icon>
-    <mat-checkbox color='warn' ></mat-checkbox>
-  </mat-card-header>
-  <mat-card-content>
-    <ul>
-      <li *ngFor="let item of goods$ | async"> 
-        {{ item.name }}
-      </li>
-    </ul>
-  </mat-card-content>
-
-
-  <mat-card-actions>
-    <button color='accent' mat-button>LIKE</button>
-    <button color='warn' mat-button>WARN</button>
-  </mat-card-actions>
-</mat-card>
-
-<onecgoodslist></onecgoodslist>
 
 
 <router-outlet></router-outlet>

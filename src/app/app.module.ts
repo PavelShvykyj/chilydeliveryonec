@@ -1,5 +1,3 @@
-
-
 import { MaterialsModule } from './materials/materials.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -11,16 +9,16 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { environment } from 'src/environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
-
+import { reducers, metaReducers } from './reducers';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { StoreModule } from '@ngrx/store';
 
 /////////////////   OWN CREATED
 import { AppComponent } from './app.component';
 import { FireService } from './services/fire.service';
-
 import { OnecModule } from './onec/onec.module';
-import { StoreModule } from '@ngrx/store';
-import { reducers, metaReducers } from './reducers';
-import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { AuthModule } from './auth/auth.module';
+import { ExchangeModule } from './exchange/exchange.module';
 
 
 
@@ -43,10 +41,14 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
     AngularFireAuthModule,
     AngularFirestoreModule,
     FlexLayoutModule,
+    StoreModule.forRoot(reducers, { metaReducers }),
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
+    
+    
     /////////////////   OWN CREATED
     OnecModule,
-    StoreModule.forRoot(reducers, { metaReducers }),
-    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production })
+    AuthModule,
+    ExchangeModule
 
   ], 
   providers: [FireService],

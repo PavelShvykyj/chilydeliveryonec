@@ -18,12 +18,8 @@ export class AppComponent {
 
   }
 
-  Test1C() {
-    if(xForm1C == undefined) {
-      alert("1C not init yet");
-    } else {
-      alert(xForm1C.TestMessage()); 
-    }
+  LogOut() {
+ 
   }
 
 }
