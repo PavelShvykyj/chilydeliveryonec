@@ -1,4 +1,4 @@
-
+import { EffectsModule } from '@ngrx/effects';
 
 import { BaseelementsModule } from '../baseelements/baseelements.module'
 import { NgModule } from '@angular/core';
@@ -17,6 +17,7 @@ import * as fromOnec from './reducers';
     CommonModule,
     BaseelementsModule,
     MaterialsModule,
+    EffectsModule.forFeature([]),
     StoreModule.forFeature(fromOnec.onecFeatureKey, fromOnec.reducers, { metaReducers: fromOnec.metaReducers })
   ],
   exports: [OnecGoodsListComponent],
