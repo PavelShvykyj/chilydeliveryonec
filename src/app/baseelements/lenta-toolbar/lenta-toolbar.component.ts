@@ -27,7 +27,7 @@ export class LentaToolbarComponent implements OnInit {
   @Output('OnToolbarCommandClicked') OnToolbarCommandClicked = new EventEmitter<string>();
 
 
-  @ViewChild(LentaToolbarComponent)
+  @ViewChild(LentaToolbarComponent, {static: false})
   toolbar: LentaToolbarComponent;
 
   constructor() { }

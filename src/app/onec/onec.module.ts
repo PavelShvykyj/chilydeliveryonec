@@ -1,4 +1,4 @@
-import { OnecReducer } from './../reducers/index';
+
 import { EffectsModule } from '@ngrx/effects';
 
 import { BaseelementsModule } from '../baseelements/baseelements.module'
@@ -10,6 +10,8 @@ import { OnecGoodsListComponent } from './onec.goods.list/onec.goods.list.compon
 import { MaterialsModule } from '../materials/materials.module';
 import { StoreModule } from '@ngrx/store';
 import * as fromOnec from './reducers';
+import {reducer} from './reducers';
+import { OnecEffects } from './onec.effects';
 
 
 @NgModule({
@@ -18,8 +20,8 @@ import * as fromOnec from './reducers';
     CommonModule,
     BaseelementsModule,
     MaterialsModule,
-    EffectsModule.forFeature([]),
-    StoreModule.forFeature(fromOnec.onecFeatureKey, OnecReducer )
+    EffectsModule.forFeature([OnecEffects]),
+    StoreModule.forFeature(fromOnec.FeatureKey, reducer)
   ],
   exports: [OnecGoodsListComponent],
   providers: [OnecGoodsDatasourseService]

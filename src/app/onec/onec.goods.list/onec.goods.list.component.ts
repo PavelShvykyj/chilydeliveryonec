@@ -16,7 +16,7 @@ import { MatCheckboxChange } from '@angular/material/checkbox';
 })
 export class OnecGoodsListComponent implements OnInit {
 
-  @ViewChild(LentaToolbarComponent)
+  @ViewChild(LentaToolbarComponent, {static: false})
   toolbar: LentaToolbarComponent;
 
   elements$ : Observable<IONECGood[]> = this.ds.dataSourse$;

@@ -3,22 +3,22 @@
 
   <span class="spacer"> </span>
   <mat-nav-list  fxLayout="row" >
-    <mat-list-item fxFlex>
+    <mat-list-item fxFlex="1 1 auto">
       <a matLine routerLink="/login" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"><mat-icon>info</mat-icon> Login  </a>
     </mat-list-item>
     
 
-    <mat-list-item fxFlex>
+    <mat-list-item fxFlex="1 1 auto">
       <a matLine routerLink="/goods" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"><mat-icon>info</mat-icon> Goods  </a>
     </mat-list-item>
 
-    <mat-list-item fxFlex>
+    <mat-list-item fxFlex="1 1 auto">
       <a matLine routerLink="/orders" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"><mat-icon>info</mat-icon> Orders </a>
     </mat-list-item>
   </mat-nav-list>
 
 
-  <span class="spacer"> </span>
+  
   <button color='accent' mat-raised-button (click)="LogOut()"> Logout </button>
 </mat-toolbar>
 
