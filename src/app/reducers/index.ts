@@ -1,19 +1,30 @@
+import { IONECGood } from 'src/app/models/onec.good';
+import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import {
   ActionReducer,
   ActionReducerMap,
   createFeatureSelector,
   createSelector,
-  MetaReducer
+  MetaReducer,
+  createReducer
 } from '@ngrx/store';
-import { environment } from '../../environments/environment';
 
-export interface State {
+
+export interface OnecState extends EntityState<IONECGood> {
 
 }
 
-export const reducers: ActionReducerMap<State> = {
+export const OnecAdapter = createEntityAdapter<IONECGood>();
 
-};
+export const initialCoursesState = OnecAdapter.getInitialState();
 
 
-export const metaReducers: MetaReducer<State>[] = !environment.production ? [] : [];
+export const OnecReducer  = createReducer(
+  initialCoursesState
+
+); 
+
+
+
+
+

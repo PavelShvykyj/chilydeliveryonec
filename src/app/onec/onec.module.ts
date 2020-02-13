@@ -1,3 +1,4 @@
+import { OnecReducer } from './../reducers/index';
 import { EffectsModule } from '@ngrx/effects';
 
 import { BaseelementsModule } from '../baseelements/baseelements.module'
@@ -18,7 +19,7 @@ import * as fromOnec from './reducers';
     BaseelementsModule,
     MaterialsModule,
     EffectsModule.forFeature([]),
-    StoreModule.forFeature(fromOnec.onecFeatureKey, fromOnec.reducers, { metaReducers: fromOnec.metaReducers })
+    StoreModule.forFeature(fromOnec.onecFeatureKey, OnecReducer )
   ],
   exports: [OnecGoodsListComponent],
   providers: [OnecGoodsDatasourseService]
