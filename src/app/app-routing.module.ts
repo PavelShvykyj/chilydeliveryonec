@@ -14,7 +14,7 @@ const routes: Routes = [
   {
     path: 'goods',
     component: GoodsExchangeComponent,
-    resolve:GoodsResolver
+    resolve : {goods : GoodsResolver}
   },
 
   {

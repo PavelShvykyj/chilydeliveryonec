@@ -13,14 +13,12 @@ export class OnecEffects {
     loadOnecGoods$ = createEffect(() =>
         this.actions$.pipe(
             ofType(OnecActions.loadAllGoods),
-            concatMap(action => { this.OnecServise.GetList(undefined); return this.OnecServise.dataSourse$ }),
-            map(goods => allGoodsLoaded({ goods: [] }))
+            concatMap(action => {console.log('effect'); this.OnecServise.GetList(undefined); return this.OnecServise.dataSourse$ }),
+            map(goods => allGoodsLoaded({ goods }))
         )
     )
 
 
     constructor(private actions$: Actions, private OnecServise: OnecGoodsDatasourseService) {
-
-
     }
 }

@@ -12,6 +12,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { reducers, metaReducers } from './reducers';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import {RouterState, StoreRouterConnectingModule, routerReducer} from '@ngrx/router-store';
 
 /////////////////   OWN CREATED
 import { AppComponent } from './app.component';
@@ -19,8 +21,9 @@ import { FireService } from './services/fire.service';
 import { OnecModule } from './onec/onec.module';
 import { AuthModule } from './auth/auth.module';
 import { ExchangeModule } from './exchange/exchange.module';
-import { EffectsModule } from '@ngrx/effects';
+
 import { AppEffects } from './app.effects';
+
 
 
 
@@ -45,13 +48,19 @@ import { AppEffects } from './app.effects';
     FlexLayoutModule,
     StoreModule.forRoot(reducers, { metaReducers }),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
-    
+    EffectsModule.forRoot([AppEffects]),
+    StoreRouterConnectingModule.forRoot({
+      stateKey: 'router',
+      routerState: RouterState.Minimal
+    }),
     
     /////////////////   OWN CREATED
     OnecModule,
     AuthModule,
-    ExchangeModule,
-    EffectsModule.forRoot([AppEffects])
+    ExchangeModule
+    
+    
+    
 
   ], 
   providers: [FireService],
