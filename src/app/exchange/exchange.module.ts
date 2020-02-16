@@ -1,3 +1,5 @@
+import { WebModule } from './../web/web.module';
+import { MaterialsModule } from './../materials/materials.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { GoodsExchangeComponent } from './goods-exchange/goods-exchange.component';
@@ -9,7 +11,9 @@ import { OnecModule } from '../onec/onec.module';
   declarations: [GoodsExchangeComponent, OrdersExchangeComponent],
   imports: [
     CommonModule,
-    OnecModule
+    OnecModule,
+    WebModule,
+    MaterialsModule
   ],
   providers:[GoodsResolver]
 })

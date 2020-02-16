@@ -3,7 +3,7 @@
 
 <mat-card>
   <mat-card-header>
-    <mat-card-subtitle>Список товаров </mat-card-subtitle>
+    <mat-card-subtitle>Список web товаров </mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
     <mat-list>
@@ -15,12 +15,10 @@
         <mat-checkbox color='warn' [checked]="item.isSelected"  mat-list-icon *ngIf="!item.isFolder" (change)="OnGoodCheked($event,item)">
         </mat-checkbox>
         <h4 mat-line>{{item.name}}</h4>
-        <p mat-line> {{item.filial}} </p>
+        <p mat-line *ngFor="let filial of item.filials" > {{filial}} </p>
       </mat-list-item>
     </mat-list>
   </mat-card-content>
 </mat-card>
-
-
 
 

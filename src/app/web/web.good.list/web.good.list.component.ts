@@ -1,31 +1,28 @@
-import { selectGoodsByParent } from './../onec.selectors';
-import { AppState } from './../../reducers/index';
-import { Store, select } from '@ngrx/store';
-import { ITolbarCommandsList } from './../../models/toolbar.commandslist';
-import { element } from 'protractor';
-
+import { selectGoodsByParent } from './../web.selectors';
+import { IWEBGood } from './../../models/web.good';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { OnecGoodsDatasourseService } from '../onec.goods.datasourse.service';
+import { WebGoodsDatasourseService } from '../web.goods.datasourse.service';
+import { Store, select } from '@ngrx/store';
+import { AppState } from 'src/app/reducers';
 import { LentaToolbarComponent } from 'src/app/baseelements/lenta-toolbar/lenta-toolbar.component';
-import { IONECGood } from 'src/app/models/onec.good';
 import { Observable } from 'rxjs';
+import { ITolbarCommandsList } from 'src/app/models/toolbar.commandslist';
 import { IBaseGood } from 'src/app/models/base.good';
 import { MatCheckboxChange } from '@angular/material/checkbox';
-import { tap, first } from 'rxjs/operators';
-import { loadAllGoods, statusSelectedGanged } from '../onec.actions';
 import { Update } from '@ngrx/entity';
+import { statusWebSelectedGanged } from '../web.actions';
 
 @Component({
-  selector: 'onecgoodslist',
-  templateUrl: './onec.goods.list.component.html',
-  styleUrls: ['./onec.goods.list.component.scss']
+  selector: 'webgoodlist',
+  templateUrl: './web.good.list.component.html',
+  styleUrls: ['./web.good.list.component.scss']
 })
-export class OnecGoodsListComponent implements OnInit {
+export class WebGoodListComponent implements OnInit {
 
   @ViewChild(LentaToolbarComponent, {static: false})
   toolbar: LentaToolbarComponent;
 
-  elements$ : Observable<IONECGood[]>; //= this.ds.dataSourse$;
+  elements$ : Observable<IWEBGood[]>; //= this.ds.dataSourse$;
   toolbarcommands : ITolbarCommandsList[] = [
     {
       commandName: "refresh",
@@ -47,13 +44,13 @@ export class OnecGoodsListComponent implements OnInit {
 
   ]
 
-  constructor(public ds : OnecGoodsDatasourseService, private store: Store<AppState>) { }
+  constructor(public ds : WebGoodsDatasourseService, private store: Store<AppState>) { }
 
   ngOnInit() {
-    this.elements$ = this.store.pipe(select(selectGoodsByParent,{parentid:undefined})); 
+    this.elements$ = this.store.pipe(select(selectGoodsByParent,{parentid:undefined}));
   }
 
-  OnGoodClicked(item: IONECGood) {
+  OnGoodClicked(item: IWEBGood) {
     if(item.isFolder) {
       //this.ds.GetList(item.id);
       this.elements$ = this.store.pipe(select(selectGoodsByParent,{parentid:item.id})); 
@@ -64,12 +61,12 @@ export class OnecGoodsListComponent implements OnInit {
 
   }
 
-  OnGoodCheked(event:MatCheckboxChange,item: IONECGood) {
-    const update : Update<IONECGood> = {
+  OnGoodCheked(event:MatCheckboxChange,item: IWEBGood) {
+    const update : Update<IWEBGood> = {
       id:item.id,
       changes:{isSelected:event.checked}
     }
-    this.store.dispatch(statusSelectedGanged({update}));
+    this.store.dispatch(statusWebSelectedGanged({update}));
 
     //alert(item.name+" "+event.checked);
   }
@@ -94,7 +91,7 @@ export class OnecGoodsListComponent implements OnInit {
         break;
       case "upload":
         alert("Команда upload");
-        //this.store.dispatch(loadAllGoods());
+        
 
         break;
       case "download":
@@ -107,5 +104,6 @@ export class OnecGoodsListComponent implements OnInit {
 
 
   }
+
 
 }

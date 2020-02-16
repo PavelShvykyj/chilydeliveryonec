@@ -3,5 +3,6 @@ export interface IBaseGood {
     parentid:string | undefined,
     isFolder:boolean,
     id:string,
-    externalid:string | undefined
+    externalid:string | undefined,
+    isSelected:boolean
 }

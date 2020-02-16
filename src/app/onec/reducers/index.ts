@@ -33,7 +33,8 @@ export const initialState = OnecAdapter.getInitialState({allGoodsLoaded:false});
 
 export const OnecReducer  = createReducer(
   initialState,
-  on(OnecActions.allGoodsLoaded ,(state,action)=>OnecAdapter.addAll(action.goods,{...state, allGoodsLoaded: true}))
+  on(OnecActions.allGoodsLoaded ,(state,action)=>OnecAdapter.addAll(action.goods,{...state, allGoodsLoaded: true})),
+  on(OnecActions.statusSelectedGanged,  (state,action)=>OnecAdapter.updateOne(action.update ,state))
 ); 
 
 export const { selectAll } = OnecAdapter.getSelectors();

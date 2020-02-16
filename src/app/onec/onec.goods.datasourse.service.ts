@@ -19,6 +19,7 @@ export class OnecGoodsDatasourseService implements IGoodsListDatasourse{
       name: "fake folder 1",
       filial: "vopak",
       id:"1",
+      isSelected:false,
       externalid:undefined
     },
 
@@ -28,6 +29,7 @@ export class OnecGoodsDatasourseService implements IGoodsListDatasourse{
       name: "fake folder long long name 2",
       filial: "vopak",
       id:"2",
+      isSelected:false,
       externalid:undefined
     },
 
@@ -37,6 +39,7 @@ export class OnecGoodsDatasourseService implements IGoodsListDatasourse{
       name: "fake item 1 with long name пица ароматная большая ням ням",
       filial: "vopak",
       id:"3",
+      isSelected:false,
       externalid:undefined
     },
 
@@ -46,6 +49,7 @@ export class OnecGoodsDatasourseService implements IGoodsListDatasourse{
       name: "fake item 2",
       filial: "vopak",
       id:"4",
+      isSelected:false,
       externalid:undefined
     }
 
