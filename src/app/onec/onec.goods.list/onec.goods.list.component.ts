@@ -114,7 +114,7 @@ export class OnecGoodsListComponent implements OnInit {
 
   }
 
-  OnNameFilterInput(event) {
+  OnNameFilterInput() {
    
 
     if(this.NameFilterValue.length == 0 ){
@@ -132,7 +132,7 @@ export class OnecGoodsListComponent implements OnInit {
 
   OnNameFilterCleared() {
     this.NameFilterValue='';
-    this.OnNameFilterInput(undefined);
+    this.OnNameFilterInput();
   }
   
   GetCurrentParent() : string | undefined {
