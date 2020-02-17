@@ -116,7 +116,9 @@ export class WebGoodListComponent implements OnInit {
       
       this.elements$ = this.store.pipe(select(selectGoodsByParent,{parentid:this.GetCurrentParent()})); 
     } else {
-      this.elements$ = this.store.pipe(select(selectGoodByName,this.NameFilterValue));
+      // заменям пробелы \s* на любое количество любых сиволов (".*")
+      const reg = this.NameFilterValue.replace( /\s*/g, ".*");
+      this.elements$ = this.store.pipe(select(selectGoodByName,reg));
     }
   }
 

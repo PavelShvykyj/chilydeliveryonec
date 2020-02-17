@@ -33,7 +33,9 @@ export const selectNotInWeb = createSelector(
 
 export const selectGoodByName = createSelector(
     selectAllGoods,
-    (goods:IONECGood[],props:string) => goods.filter(element => !element.isFolder && element.name.search(props)!=-1)
+    (goods:IONECGood[],props:string) => goods.filter(element =>{
+     
+    return !element.isFolder && element.name.search(props)!=-1})  
 )
 
 

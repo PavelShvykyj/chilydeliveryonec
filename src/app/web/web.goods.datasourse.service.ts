@@ -11,6 +11,8 @@ import { select, Store } from '@ngrx/store';
 import { areAllWebGoodsLoaded } from './web.selectors';
 import { AppState } from '../reducers';
 import { environment } from 'src/environments/environment';
+import { Update } from '@ngrx/entity';
+import { onecGoodUploaded } from './web.actions';
 
 // firebase.initializeApp(environment.firebase);
 // const idfield = firebase.firestore.FieldPath.documentId();
@@ -107,6 +109,24 @@ export class WebGoodsDatasourseService implements IGoodsListDatasourse {
     .pipe(map(element=> {return { goods: element[0], dirtygoods:element[1]}}),first())
 
   }
+
+  async UpdateOne(data: IONECGood) {
+   //// тут убрать из data свойство id и на место externalid полжить код id и положитьв переменную newdata
+   //// id externalid зеркально изменены (поменяны местами в 1С и FireBasw)
+   const idonec = data.id;
+
+   //// тут не  add(data) в add(newdata) где newdata - данные 
+   const ref = await this.db.collection('onec.goods').add(data);
+   const onecupdated = await xForm1C.SetExternalId(idonec, ref.id);
+   const update : Update<IONECGood> = {
+    id:data.id,
+    changes:{externalid:ref.id}
+  }
+   
+   this.store.dispatch(onecGoodUploaded({update}));
+   
+  }
+
 
 }
 

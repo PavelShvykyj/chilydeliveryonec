@@ -6,9 +6,12 @@
     <mat-card-subtitle >Список товаров </mat-card-subtitle>
   
     <mat-form-field color='accent' class="example-form-field">
-      <input  matInput type="text" placeholder="Поиск по имени" (input)="OnNameFilterInput()" [(ngModel)]="NameFilterValue">
+      <input  matInput type="text" placeholder="Поиск по имени" (keyup)="OnNameFilterInput()" [(ngModel)]="NameFilterValue">
       <button mat-button *ngIf="NameFilterValue" matSuffix mat-icon-button aria-label="Clear" (click)="OnNameFilterCleared()">
         <mat-icon>close</mat-icon>
+      </button>
+      <button mat-button *ngIf="NameFilterValue" matSuffix mat-icon-button aria-label="Refresh" (click)="OnNameFilterInput()">
+        <mat-icon>refresh</mat-icon>
       </button>
     </mat-form-field>
   </mat-card-header>

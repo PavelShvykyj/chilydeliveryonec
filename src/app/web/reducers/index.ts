@@ -14,6 +14,7 @@ import { environment } from '../../../environments/environment';
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import { WebActions } from '../wtb.action.types';
 import { allWebGoodsLoaded } from '../web.actions';
+import { state } from '@angular/animations';
 
 
 export const webFeatureKey = 'web';
@@ -56,10 +57,19 @@ export const initialState = {
 
 }
 
+function OneCGoodUploded(state:WebState,action) : WebState {
+  return {
+    ...state,
+    dirtywebGoods: DirtyWebAdapter.updateOne(action.update ,state.dirtywebGoods)
+  }
+
+}
+
 export const WebReducer = createReducer(
   initialState,
   on(WebActions.allWebGoodsLoaded ,(state,action)=> LoadAllGoods(state,action)),
-  on(WebActions.statusWebSelectedGanged,  (state,action)=> StatusWebSelectedGanged(state,action))
+  on(WebActions.statusWebSelectedGanged,  (state,action)=> StatusWebSelectedGanged(state,action)),
+  on(WebActions.onecGoodUploaded,  (state,action)=> OneCGoodUploded(state,action)),
 )
 
 export const {selectAll, selectEntities} = WebAdapter.getSelectors();

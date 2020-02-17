@@ -16,6 +16,7 @@ import { loadAllGoods, statusSelectedGanged } from '../onec.actions';
 import { Update } from '@ngrx/entity';
 
 
+
 @Component({
   selector: 'onecgoodslist',
   templateUrl: './onec.goods.list.component.html',
@@ -113,13 +114,17 @@ export class OnecGoodsListComponent implements OnInit {
 
   }
 
-  OnNameFilterInput() {
-    
+  OnNameFilterInput(event) {
+   
+
     if(this.NameFilterValue.length == 0 ){
       
       this.elements$ = this.store.pipe(select(selectGoodsByParent,{parentid:this.GetCurrentParent()})); 
     } else {
-      this.elements$ = this.store.pipe(select(selectGoodByName,this.NameFilterValue));
+      // заменям пробелы \s* на любое количество любых сиволов (".*")
+      const reg = this.NameFilterValue.replace( /\s*/g, ".*");
+      
+      this.elements$ = this.store.pipe(select(selectGoodByName,reg));
     }
     
     
@@ -127,7 +132,7 @@ export class OnecGoodsListComponent implements OnInit {
 
   OnNameFilterCleared() {
     this.NameFilterValue='';
-    this.OnNameFilterInput();
+    this.OnNameFilterInput(undefined);
   }
   
   GetCurrentParent() : string | undefined {
