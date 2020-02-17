@@ -10,13 +10,9 @@ import { FireService } from './services/fire.service';
 })
 export class AppComponent {
   title = 'deliveryonec';
-  goods$: Observable<IWEBGood[]>;
+ 
 
-  constructor(private db : FireService) {
-    
-    this.goods$ = db.getWebGoods();
-
-  }
+  constructor(private db : FireService) {}
 
   LogOut() {
  

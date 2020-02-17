@@ -1,5 +1,6 @@
-import { selectGoodsByParent } from './../web.selectors';
-import { IWEBGood } from './../../models/web.good';
+import { IONECGood } from './../../models/onec.good';
+import { selectGoodsByParent,  selectDirtyGoodFilialById, selectNotInONEC, selectGoodByName } from './../web.selectors';
+import { IWEBGood, IWEBGoodWithFilials } from './../../models/web.good';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { WebGoodsDatasourseService } from '../web.goods.datasourse.service';
 import { Store, select } from '@ngrx/store';
@@ -12,6 +13,8 @@ import { MatCheckboxChange } from '@angular/material/checkbox';
 import { Update } from '@ngrx/entity';
 import { statusWebSelectedGanged } from '../web.actions';
 
+
+
 @Component({
   selector: 'webgoodlist',
   templateUrl: './web.good.list.component.html',
@@ -22,7 +25,8 @@ export class WebGoodListComponent implements OnInit {
   @ViewChild(LentaToolbarComponent, {static: false})
   toolbar: LentaToolbarComponent;
 
-  elements$ : Observable<IWEBGood[]>; //= this.ds.dataSourse$;
+  filialname:string="vopac";
+  elements$ : Observable<IWEBGoodWithFilials[]>; //= this.ds.dataSourse$;
   toolbarcommands : ITolbarCommandsList[] = [
     {
       commandName: "refresh",
@@ -31,9 +35,9 @@ export class WebGoodListComponent implements OnInit {
     },
 
     {
-      commandName: "upload",
+      commandName: "difference",
       buttonName:"",
-      iconeName:'cloud_upload'
+      iconeName:'call_split'
     },
 
     {
@@ -43,6 +47,8 @@ export class WebGoodListComponent implements OnInit {
     }
 
   ]
+
+  NameFilterValue:string="";
 
   constructor(public ds : WebGoodsDatasourseService, private store: Store<AppState>) { }
 
@@ -71,7 +77,6 @@ export class WebGoodListComponent implements OnInit {
     //alert(item.name+" "+event.checked);
   }
 
-
   OnLentaElementClicked(event : IBaseGood) {
     if(event == undefined) {
       //this.ds.GetList(undefined);
@@ -87,21 +92,45 @@ export class WebGoodListComponent implements OnInit {
     switch (event) {
       case "refresh":
         //this.ds.GetList(undefined);
-        this.elements$ = this.store.pipe(select(selectGoodsByParent,{parentid:undefined})); 
+        this.elements$ = this.store.pipe(select(selectGoodsByParent,{parentid: this.GetCurrentParent()})); 
+        this.NameFilterValue='';
         break;
-      case "upload":
-        alert("Команда upload");
-        
+      case "difference":
+        //alert("Команда upload");
+        this.elements$ = this.store.pipe(select(selectNotInONEC,this.filialname));
 
         break;
       case "download":
-        alert("Команда download");
+        //alert("Команда download");
         break;
         
       default:
         break;
     }
 
+
+  }
+
+  OnNameFilterInput() {
+    if(this.NameFilterValue.length == 0 ){
+      
+      this.elements$ = this.store.pipe(select(selectGoodsByParent,{parentid:this.GetCurrentParent()})); 
+    } else {
+      this.elements$ = this.store.pipe(select(selectGoodByName,this.NameFilterValue));
+    }
+  }
+
+  OnNameFilterCleared() {
+    this.NameFilterValue='';
+    this.OnNameFilterInput();
+  }
+
+  GetCurrentParent() : string | undefined {
+    let parentid : string = undefined;
+    if( this.toolbar.lenta.length != 0) {
+      parentid = this.toolbar.lenta[this.toolbar.lenta.length-1].id;
+    }
+    return  parentid;
 
   }
 

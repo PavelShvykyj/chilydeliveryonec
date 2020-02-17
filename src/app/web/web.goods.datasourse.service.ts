@@ -1,11 +1,11 @@
-import { Injectable } from '@angular/core';
 
+import { Injectable } from '@angular/core';
 import * as firebase from 'firebase/app';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { IWEBGood } from '../models/web.good';
 import { IONECGood } from '../models/onec.good';
 import { IGoodsListDatasourse } from '../models/goods.list.datasourse';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable, BehaviorSubject, combineLatest } from 'rxjs';
 import { map, filter, concatMap, first, tap } from 'rxjs/operators';
 import { select, Store } from '@ngrx/store';
 import { areAllWebGoodsLoaded } from './web.selectors';
@@ -73,12 +73,40 @@ export class WebGoodsDatasourseService implements IGoodsListDatasourse {
 
   GetList(parentID: string | undefined) {
     console.log("web  get lits");
-    this.store.pipe(
-      select(areAllWebGoodsLoaded),
-      filter(WebGoodsLoaded => {console.log("WebGoodsLoaded",WebGoodsLoaded);  return !WebGoodsLoaded} ),
-      concatMap(WebGoodsLoaded => this.db.collection('web.goods').snapshotChanges().pipe(map(res => { console.log(res); return res.map(element  => {return {...(element.payload.doc.data() as object) ,isSelected:false, id:element.payload.doc.id}} ) as IWEBGood[];}   ))),
-      first(),
-      tap(res => this.dataEventer.next(res))
-      ).subscribe();
+    // this.store.pipe(
+    //   select(areAllWebGoodsLoaded),
+    //   filter(WebGoodsLoaded => {console.log("WebGoodsLoaded",WebGoodsLoaded);  return !WebGoodsLoaded} ),
+    //   concatMap(WebGoodsLoaded => this.db.collection('web.goods').snapshotChanges().pipe(map(res => { console.log(res); return res.map(element  => {return {...(element.payload.doc.data() as object) ,isSelected:false, id:element.payload.doc.id}} ) as IWEBGood[];}   ))),
+    //   first(),
+    //   tap(res => this.dataEventer.next(res))
+    //   ).subscribe();
   }
+
+  GetAllGoods() : Observable<{goods: IWEBGood[], dirtygoods:IONECGood[]}> {
+
+    const webgoods$ = this.db.collection('web.goods')
+    .snapshotChanges()
+    .pipe(map(res =>
+      { console.log(res); 
+        return res.map(element  => { 
+          return {...(element.payload.doc.data() as object),
+                   isSelected:false, 
+                   id:element.payload.doc.id}} ) as IWEBGood[];}),first());
+
+    const dirtywebgoods$ = this.db.collection('onec.goods')
+    .snapshotChanges()
+    .pipe(map(res =>
+      { console.log(res); 
+        return res.map(element  => { 
+          return {...(element.payload.doc.data() as object),
+                  isSelected:false, 
+                  id:element.payload.doc.id}} ) as IONECGood[];}),first());
+                           
+
+    return combineLatest(webgoods$,dirtywebgoods$)
+    .pipe(map(element=> {return { goods: element[0], dirtygoods:element[1]}}),first())
+
+  }
+
 }
+

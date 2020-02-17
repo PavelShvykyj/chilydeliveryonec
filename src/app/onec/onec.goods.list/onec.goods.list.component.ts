@@ -1,4 +1,4 @@
-import { selectGoodsByParent } from './../onec.selectors';
+import { selectGoodsByParent, selectNotInWeb, selectGoodByName } from './../onec.selectors';
 import { AppState } from './../../reducers/index';
 import { Store, select } from '@ngrx/store';
 import { ITolbarCommandsList } from './../../models/toolbar.commandslist';
@@ -14,6 +14,7 @@ import { MatCheckboxChange } from '@angular/material/checkbox';
 import { tap, first } from 'rxjs/operators';
 import { loadAllGoods, statusSelectedGanged } from '../onec.actions';
 import { Update } from '@ngrx/entity';
+
 
 @Component({
   selector: 'onecgoodslist',
@@ -40,12 +41,14 @@ export class OnecGoodsListComponent implements OnInit {
     },
 
     {
-      commandName: "download",
+      commandName: "difference",
       buttonName:"",
-      iconeName:'cloud_download'
+      iconeName:'call_split'
     }
 
   ]
+
+  NameFilterValue:string="";
 
   constructor(public ds : OnecGoodsDatasourseService, private store: Store<AppState>) { }
 
@@ -71,16 +74,17 @@ export class OnecGoodsListComponent implements OnInit {
     }
     this.store.dispatch(statusSelectedGanged({update}));
 
-    //alert(item.name+" "+event.checked);
+    
   }
 
 
   OnLentaElementClicked(event : IBaseGood) {
     if(event == undefined) {
-      //this.ds.GetList(undefined);
+      
+      
       this.elements$ = this.store.pipe(select(selectGoodsByParent,{parentid:undefined})); 
     } else {
-      //this.ds.GetList(event.id);
+      
       this.elements$ = this.store.pipe(select(selectGoodsByParent,{parentid:event.id})); 
     }
     
@@ -89,22 +93,49 @@ export class OnecGoodsListComponent implements OnInit {
   OnToolbarCommandClicked(event : string) {
     switch (event) {
       case "refresh":
-        //this.ds.GetList(undefined);
-        this.elements$ = this.store.pipe(select(selectGoodsByParent,{parentid:undefined})); 
+        
+        this.elements$ = this.store.pipe(select(selectGoodsByParent,{parentid:this.GetCurrentParent()})); 
+        this.NameFilterValue='';
         break;
       case "upload":
-        alert("Команда upload");
-        //this.store.dispatch(loadAllGoods());
+        
+        
 
         break;
-      case "download":
-        alert("Команда download");
+      case "difference":
+        this.elements$ = this.store.pipe(select(selectNotInWeb)); 
         break;
         
       default:
         break;
     }
 
+
+  }
+
+  OnNameFilterInput() {
+    
+    if(this.NameFilterValue.length == 0 ){
+      
+      this.elements$ = this.store.pipe(select(selectGoodsByParent,{parentid:this.GetCurrentParent()})); 
+    } else {
+      this.elements$ = this.store.pipe(select(selectGoodByName,this.NameFilterValue));
+    }
+    
+    
+  }
+
+  OnNameFilterCleared() {
+    this.NameFilterValue='';
+    this.OnNameFilterInput();
+  }
+  
+  GetCurrentParent() : string | undefined {
+    let parentid : string = undefined;
+    if( this.toolbar.lenta.length != 0) {
+      parentid = this.toolbar.lenta[this.toolbar.lenta.length-1].id;
+    }
+    return  parentid;
 
   }
 

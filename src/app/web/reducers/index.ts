@@ -1,3 +1,4 @@
+import { IONECGood } from './../../models/onec.good';
 import { IWEBGood } from './../../models/web.good';
 import {
   ActionReducer,
@@ -12,25 +13,58 @@ import {
 import { environment } from '../../../environments/environment';
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import { WebActions } from '../wtb.action.types';
+import { allWebGoodsLoaded } from '../web.actions';
 
 
 export const webFeatureKey = 'web';
 
-export interface WebState extends EntityState<IWEBGood> {
+export interface DirtyWebGoods extends EntityState<IONECGood> {}
+export interface WebGoods extends EntityState<IWEBGood> {}
+export interface WebState  {
   allGoodsLoaded: boolean
+  webGoods:WebGoods,
+  dirtywebGoods:DirtyWebGoods,
 }
 
 export const WebAdapter = createEntityAdapter<IWEBGood>();
+export const DirtyWebAdapter = createEntityAdapter<IONECGood>();
 
-export const initialState = WebAdapter.getInitialState({allGoodsLoaded:false});
+export const initialStateWeb = WebAdapter.getInitialState();
+export const initialStateDirtyWeb = DirtyWebAdapter.getInitialState();
+
+export const initialState = { 
+  allGoodsLoaded: false,
+  webGoods:initialStateWeb,
+  dirtywebGoods:initialStateDirtyWeb
+}
+
+ function LoadAllGoods(state:WebState, action) : WebState {
+  return  {
+    ...state,
+    webGoods: WebAdapter.addAll(action.goods,state.webGoods),
+    dirtywebGoods: DirtyWebAdapter.addAll(action.dirtygoods,state.dirtywebGoods),
+    allGoodsLoaded:true
+  } ;
+
+}
+
+ function StatusWebSelectedGanged(state:WebState,action) : WebState {
+  return {
+    ...state,
+    webGoods: WebAdapter.updateOne(action.update ,state.webGoods)
+  }
+
+}
 
 export const WebReducer = createReducer(
   initialState,
-  on(WebActions.allWebGoodsLoaded ,(state,action)=>WebAdapter.addAll(action.goods,{...state, allGoodsLoaded: true})),
-  on(WebActions.statusWebSelectedGanged,  (state,action)=>WebAdapter.updateOne(action.update ,state))
+  on(WebActions.allWebGoodsLoaded ,(state,action)=> LoadAllGoods(state,action)),
+  on(WebActions.statusWebSelectedGanged,  (state,action)=> StatusWebSelectedGanged(state,action))
 )
 
-export const {selectAll} = WebAdapter.getSelectors();
+export const {selectAll, selectEntities} = WebAdapter.getSelectors();
+export const selectDirtyAll = DirtyWebAdapter.getSelectors().selectAll;
+export const selectDirtyAllEntities = DirtyWebAdapter.getSelectors().selectEntities;;
 
 
 export function reducer(state: WebState | undefined, action: Action) {

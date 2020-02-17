@@ -1,3 +1,4 @@
+import { IONECGood } from './../models/onec.good';
 import { element } from 'protractor';
 import * as fromOnec from './reducers/index';
 import { OnecState } from './reducers/index';
@@ -25,8 +26,22 @@ export const selectGoodBySelection = createSelector(
     goods => goods.filter(element => element.isSelected)
 )
 
+export const selectNotInWeb = createSelector(
+    selectAllGoods,
+    goods => goods.filter(element => {return !element.isFolder && ( element.externalid=="" || element.externalid==undefined)})
+)
+
+export const selectGoodByName = createSelector(
+    selectAllGoods,
+    (goods:IONECGood[],props:string) => goods.filter(element => !element.isFolder && element.name.search(props)!=-1)
+)
+
+
 export const areAllGoodsLoaded = createSelector(
     selectOnecState,
     state => state.allGoodsLoaded 
 )
+
+
+
 

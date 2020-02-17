@@ -12,6 +12,7 @@ import { StoreModule } from '@ngrx/store';
 import * as fromOnec from './reducers';
 import {reducer} from './reducers';
 import { OnecEffects } from './onec.effects';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -19,6 +20,7 @@ import { OnecEffects } from './onec.effects';
   imports: [
     CommonModule,
     BaseelementsModule,
+    FormsModule,
     MaterialsModule,
     EffectsModule.forFeature([OnecEffects]),
     StoreModule.forFeature(fromOnec.FeatureKey, reducer)

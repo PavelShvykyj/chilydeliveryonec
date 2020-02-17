@@ -9,6 +9,7 @@ import { BaseelementsModule } from '../baseelements/baseelements.module';
 import { MaterialsModule } from '../materials/materials.module';
 import { WebGoodsDatasourseService } from './web.goods.datasourse.service';
 import { WebEffects } from './web.effects';
+import { FormsModule } from '@angular/forms';
 
 
 
@@ -18,6 +19,7 @@ import { WebEffects } from './web.effects';
   imports: [
     CommonModule,
     BaseelementsModule,
+    FormsModule,
     MaterialsModule,
     EffectsModule.forFeature([WebEffects]),
     StoreModule.forFeature(fromWeb.webFeatureKey, reducer , { metaReducers: fromWeb.metaReducers })
