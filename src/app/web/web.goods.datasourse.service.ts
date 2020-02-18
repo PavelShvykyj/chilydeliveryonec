@@ -119,7 +119,7 @@ export class WebGoodsDatasourseService implements IGoodsListDatasourse {
    const ref = await this.db.collection('onec.goods').add(data);
    const onecupdated = await xForm1C.SetExternalId(idonec, ref.id);
    const update : Update<IONECGood> = {
-    id:data.id,
+    id:idonec,
     changes:{externalid:ref.id}
   }
    
