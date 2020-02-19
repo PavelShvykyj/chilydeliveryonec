@@ -1,18 +1,19 @@
+import { IWEBGood } from './../models/web.good';
+import { IFireBaseDirtyGood } from './../models/firebase.dirtygood';
 
 import { Injectable } from '@angular/core';
 import * as firebase from 'firebase/app';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { IWEBGood } from '../models/web.good';
 import { IONECGood } from '../models/onec.good';
 import { IGoodsListDatasourse } from '../models/goods.list.datasourse';
-import { Observable, BehaviorSubject, combineLatest } from 'rxjs';
+import { Observable, BehaviorSubject, combineLatest, from } from 'rxjs';
 import { map, filter, concatMap, first, tap } from 'rxjs/operators';
 import { select, Store } from '@ngrx/store';
 import { areAllWebGoodsLoaded } from './web.selectors';
 import { AppState } from '../reducers';
 import { environment } from 'src/environments/environment';
 import { Update } from '@ngrx/entity';
-import { onecGoodUploaded } from './web.actions';
+
 
 // firebase.initializeApp(environment.firebase);
 // const idfield = firebase.firestore.FieldPath.documentId();
@@ -110,20 +111,37 @@ export class WebGoodsDatasourseService implements IGoodsListDatasourse {
 
   }
 
-  async UpdateOne(data: IONECGood) {
-   //// тут убрать из data свойство id и на место externalid полжить код id и положитьв переменную newdata
-   //// id externalid зеркально изменены (поменяны местами в 1С и FireBasw)
-   const idonec = data.id;
+  UpdateByONEC(data: IONECGood) : Observable<IONECGood> {
+   console.log("externalid",data.externalid);
 
-   //// тут не  add(data) в add(newdata) где newdata - данные 
-   const ref = await this.db.collection('onec.goods').add(data);
-   const onecupdated = await xForm1C.SetExternalId(idonec, ref.id);
-   const update : Update<IONECGood> = {
-    id:idonec,
-    changes:{externalid:ref.id}
-  }
+   if(data.externalid=="" || data.externalid == undefined) {
+    
+    /// внешний код для фиребасе = внутренний от 1С  
+    const dataToUpdate: IFireBaseDirtyGood = {
+      externalid:data.id,
+      parentid:"",
+      isFolder:false,
+      name:data.name,
+      filial:data.filial
+    } 
+
+    return from(this.db.collection('onec.goods').add(dataToUpdate)).pipe(map(docref => {return {...data,id:docref.id,externalid:data.id,isSelected:false}   } ));
+   } else {
+
+    const dataToUpdate: IFireBaseDirtyGood = {
+      externalid:data.id,
+      parentid:"",
+      isFolder:false,
+      name:data.name,
+      filial:data.filial
+    } 
+
+    
+    return from(this.db.collection('onec.goods').doc(data.externalid).update(dataToUpdate)).pipe(map(() => {return {...data,id:data.externalid,externalid:data.id,isSelected:false}   } ));
+
+
+   }
    
-   this.store.dispatch(onecGoodUploaded({update}));
    
   }
 

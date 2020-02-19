@@ -1,4 +1,4 @@
-import { selectGoodsByParent, selectNotInWeb, selectGoodByName } from './../onec.selectors';
+import { selectGoodsByParent, selectNotInWeb, selectGoodByName, selectGoodBySelection } from './../onec.selectors';
 import { AppState } from './../../reducers/index';
 import { Store, select } from '@ngrx/store';
 import { ITolbarCommandsList } from './../../models/toolbar.commandslist';
@@ -11,9 +11,10 @@ import { IONECGood } from 'src/app/models/onec.good';
 import { Observable } from 'rxjs';
 import { IBaseGood } from 'src/app/models/base.good';
 import { MatCheckboxChange } from '@angular/material/checkbox';
-import { tap, first } from 'rxjs/operators';
+import { tap, first, finalize } from 'rxjs/operators';
 import { loadAllGoods, statusSelectedGanged } from '../onec.actions';
 import { Update } from '@ngrx/entity';
+import { uploadOnecSelected } from 'src/app/web/web.actions';
 
 
 
@@ -99,7 +100,9 @@ export class OnecGoodsListComponent implements OnInit {
         this.NameFilterValue='';
         break;
       case "upload":
-        
+        this.store.pipe(select(selectGoodBySelection),first()).subscribe(
+          selectedgoods  => {selectedgoods.forEach(good => this.store.dispatch(uploadOnecSelected({good})))}
+        );
         
 
         break;

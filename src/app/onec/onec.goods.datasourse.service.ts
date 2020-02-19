@@ -1,3 +1,5 @@
+import { element } from 'protractor';
+
 import { IGoodsListDatasourse } from './../models/goods.list.datasourse';
 import { Injectable } from '@angular/core';
 import { IBaseGood } from '../models/base.good';
@@ -20,7 +22,7 @@ export class OnecGoodsDatasourseService implements IGoodsListDatasourse{
       filial: "vopak",
       id:"1",
       isSelected:false,
-      externalid:undefined
+      externalid:""
     },
 
     {
@@ -30,7 +32,7 @@ export class OnecGoodsDatasourseService implements IGoodsListDatasourse{
       filial: "vopak",
       id:"2",
       isSelected:false,
-      externalid:undefined
+      externalid:""
     },
 
     {
@@ -40,7 +42,7 @@ export class OnecGoodsDatasourseService implements IGoodsListDatasourse{
       filial: "vopak",
       id:"3",
       isSelected:false,
-      externalid:undefined
+      externalid:""
     },
 
     {
@@ -50,7 +52,7 @@ export class OnecGoodsDatasourseService implements IGoodsListDatasourse{
       filial: "vopak",
       id:"4",
       isSelected:false,
-      externalid:undefined
+      externalid:""
     }
 
 
@@ -67,4 +69,25 @@ export class OnecGoodsDatasourseService implements IGoodsListDatasourse{
       this.dataEventer.next(content);
     }
   }
+
+  UpdateExternalId(onecid:string,externalid:string) : Observable<IONECGood>  {
+    
+
+    if(xForm1C==undefined) {
+      
+      const fakeitem = this.fake.filter(element => element.id == onecid)[0];
+      fakeitem.externalid = externalid;
+      return of(fakeitem);
+    } else {
+      const updatedGood : IONECGood = xForm1C.UpdateExternalId(onecid,externalid);
+      return of(updatedGood)
+  
+    }
+
+
+  
+
+
+  }
+
 }
