@@ -37,7 +37,7 @@ export class OnecGoodsDatasourseService implements IGoodsListDatasourse{
 
     {
       isFolder:false,
-      parentid:undefined,
+      parentid:"1",
       name: "fake item 1 with long name пица ароматная большая ням ням",
       filial: "vopak",
       id:"3",
@@ -58,10 +58,32 @@ export class OnecGoodsDatasourseService implements IGoodsListDatasourse{
 
   ]
 
-  constructor() { }
+  constructor() {
+    
+    
+    
+
+
+   }
 
   GetList(parentID:string | undefined)  {
     if(xForm1C == undefined) {
+      for (let index = 0; index < 500; index++) {
+        const element = {
+          isFolder:false,
+          parentid:undefined,
+          name: "fake item "+index,
+          filial: "vopak",
+          id:(4+index).toString(),
+          isSelected:false,
+          externalid:""
+        }
+        this.fake.push(element);
+      }
+      
+      console.log(this.fake.length);
+      
+      
       this.dataEventer.next(this.fake);
     } 
     else {
@@ -79,7 +101,7 @@ export class OnecGoodsDatasourseService implements IGoodsListDatasourse{
       fakeitem.externalid = externalid;
       return of(fakeitem);
     } else {
-      const updatedGood : IONECGood = xForm1C.UpdateExternalId(onecid,externalid);
+      const updatedGood : IONECGood = JSON.parse(xForm1C.UpdateExternalId(onecid,externalid))  ;
       return of(updatedGood)
   
     }

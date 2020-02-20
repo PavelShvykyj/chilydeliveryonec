@@ -1,5 +1,4 @@
 import { IONECGood } from './../models/onec.good';
-import { element } from 'protractor';
 import * as fromOnec from './reducers/index';
 import { OnecState } from './reducers/index';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
@@ -25,6 +24,22 @@ export const selectGoodBySelection = createSelector(
     selectAllGoods,
     goods => goods.filter(element => element.isSelected)
 )
+
+function GetExternalParentId(parentGoods:IONECGood[],parentid:string) : string {
+   const parents:IONECGood[] = parentGoods.filter(parentel=> parentel.id==parentid);
+   if(parents.length==0) {
+       return ""
+   } else {
+       return parents[0].externalid 
+   }
+}
+ 
+export const selectGoodBySelectionForUpload = createSelector(
+    selectAllGoods,
+    goods => goods.filter(element => element.isSelected)
+    .map(element=> {return {...element, parentid: GetExternalParentId(goods,element.parentid)}})
+)
+
 
 export const selectNotInWeb = createSelector(
     selectAllGoods,

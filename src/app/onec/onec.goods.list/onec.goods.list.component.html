@@ -6,7 +6,7 @@
     <mat-card-subtitle >Список товаров </mat-card-subtitle>
   
     <mat-form-field color='accent' class="example-form-field">
-      <input  matInput type="text" placeholder="Поиск по имени" (keyup)="OnNameFilterInput()" [(ngModel)]="NameFilterValue">
+      <input  matInput type="text" placeholder="Поиск по имени" (keyup.enter)="OnNameFilterInput()" [(ngModel)]="NameFilterValue">
       <button mat-button *ngIf="NameFilterValue" matSuffix mat-icon-button aria-label="Clear" (click)="OnNameFilterCleared()">
         <mat-icon>close</mat-icon>
       </button>
@@ -20,12 +20,17 @@
     <mat-list>
       <mat-list-item *ngFor="let item of (elements$ | async)">
         <!-- <mat-icon *ngIf="item.isFolder"  mat-list-icon (click)="OnGoodClicked(item)">folder</mat-icon> -->
-        <button mat-list-icon mat-icon-button *ngIf="item.isFolder" (click)="OnGoodClicked(item)">
+        <mat-checkbox color='warn' [checked]="item.isSelected"  mat-list-icon  (change)="OnGoodCheked($event,item)">
+        </mat-checkbox>
+        <button  mat-icon-button *ngIf="item.isFolder" (click)="OnGoodClicked(item)">
           <mat-icon>folder</mat-icon>
         </button>
-        <mat-checkbox color='warn' [checked]="item.isSelected"  mat-list-icon *ngIf="!item.isFolder" (change)="OnGoodCheked($event,item)">
-        </mat-checkbox>
-        <h4 mat-line>{{item.name}}</h4>
+
+        <button  mat-icon-button *ngIf="!item.isFolder" >
+          <mat-icon>radio_button_unchecked</mat-icon>
+        </button>
+
+        <h4 mat-line [ngClass]="{'externalidexists': item.externalid}">{{item.name}}</h4>
         <p mat-line> {{item.filial}} </p>
       </mat-list-item>
     </mat-list>

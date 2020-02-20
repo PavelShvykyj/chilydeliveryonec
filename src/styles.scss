@@ -21,6 +21,11 @@ $app-theme: mat-light-theme($app-primary, $app-accent, $app-warn);
     margin: auto;
 }
 
+.externalidexists {
+    color : map-get($mat-grey, 400);
+    font-style : italic;
+}
+
 mat-icon{
     font-family: 'Material Icons' !important;
   }

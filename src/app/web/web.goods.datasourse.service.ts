@@ -119,8 +119,8 @@ export class WebGoodsDatasourseService implements IGoodsListDatasourse {
     /// внешний код для фиребасе = внутренний от 1С  
     const dataToUpdate: IFireBaseDirtyGood = {
       externalid:data.id,
-      parentid:"",
-      isFolder:false,
+      parentid: data.parentid == undefined ? "" : data.parentid,
+      isFolder:data.isFolder,
       name:data.name,
       filial:data.filial
     } 
@@ -130,8 +130,8 @@ export class WebGoodsDatasourseService implements IGoodsListDatasourse {
 
     const dataToUpdate: IFireBaseDirtyGood = {
       externalid:data.id,
-      parentid:"",
-      isFolder:false,
+      parentid:data.parentid == undefined ? "" : data.parentid,
+      isFolder:data.isFolder,
       name:data.name,
       filial:data.filial
     } 

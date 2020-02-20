@@ -8,3 +8,8 @@ mat-list {
     height: 400px;
     overflow-y: scroll;
 }
+
+.externalidexists {
+    color : map-get($mat-grey, 400);
+    font-style : italic;
+}
