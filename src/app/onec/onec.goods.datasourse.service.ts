@@ -48,7 +48,7 @@ export class OnecGoodsDatasourseService implements IGoodsListDatasourse{
     {
       isFolder:false,
       parentid:undefined,
-      name: "fake item 2",
+      name: "МАЛИНОВА НАСТОЯНКА",
       filial: "vopak",
       id:"4",
       isSelected:false,

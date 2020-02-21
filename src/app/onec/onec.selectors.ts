@@ -43,7 +43,7 @@ export const selectGoodBySelectionForUpload = createSelector(
 
 export const selectNotInWeb = createSelector(
     selectAllGoods,
-    goods => goods.filter(element => {return !element.isFolder && ( element.externalid=="" || element.externalid==undefined)})
+    goods => goods.filter(element => {return ( element.externalid=="" || element.externalid==undefined)})
 )
 
 export const selectGoodByName = createSelector(

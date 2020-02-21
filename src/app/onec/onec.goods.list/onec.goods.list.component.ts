@@ -82,14 +82,10 @@ export class OnecGoodsListComponent implements OnInit {
 
   OnLentaElementClicked(event : IBaseGood) {
     if(event == undefined) {
-      
-      
       this.elements$ = this.store.pipe(select(selectGoodsByParent,{parentid:undefined})); 
     } else {
-      
       this.elements$ = this.store.pipe(select(selectGoodsByParent,{parentid:event.id})); 
     }
-    
   }
 
   OnToolbarCommandClicked(event : string) {
@@ -128,7 +124,7 @@ export class OnecGoodsListComponent implements OnInit {
       this.elements$ = this.store.pipe(select(selectGoodsByParent,{parentid:this.GetCurrentParent()})); 
     } else {
       // заменям пробелы \s* на любое количество любых сиволов (".*")
-      const reg = this.NameFilterValue.replace( /\s*/g, ".*");
+      const reg:string  = '.*'+this.NameFilterValue.replace( /\s/g, ".*")+'.*';
       
       this.elements$ = this.store.pipe(select(selectGoodByName,reg));
     }

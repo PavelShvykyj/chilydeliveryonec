@@ -11,7 +11,7 @@ import {
   on
 } from '@ngrx/store';
 import { environment } from '../../../environments/environment';
-import { EntityState, createEntityAdapter } from '@ngrx/entity';
+import { EntityState, createEntityAdapter, Dictionary } from '@ngrx/entity';
 import { WebActions } from '../wtb.action.types';
 import { allWebGoodsLoaded } from '../web.actions';
 import { state } from '@angular/animations';
@@ -76,10 +76,8 @@ export const {selectAll, selectEntities} = WebAdapter.getSelectors();
 export const selectDirtyAll = DirtyWebAdapter.getSelectors().selectAll;
 export const selectDirtyAllEntities = DirtyWebAdapter.getSelectors().selectEntities;;
 
-
 export function reducer(state: WebState | undefined, action: Action) {
   return WebReducer(state, action);
 }
-
 
 export const metaReducers: MetaReducer<WebState>[] = !environment.production ? [] : [];
