@@ -38,7 +38,7 @@ export class GoodsResolver implements Resolve<any> {
         let WebChain$ = this.store.pipe(
             select(areAllWebGoodsLoaded), 
             tap(WebGoodsLoaded => {
-                console.log("WebGoodsLoaded:",WebGoodsLoaded,"webloading:",this.webloading);
+                
                 if (!this.webloading && !WebGoodsLoaded) {
                     this.webloading = true;
                     this.store.dispatch(loadAllWebGoods());

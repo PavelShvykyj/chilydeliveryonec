@@ -1,21 +1,36 @@
-import { Component } from '@angular/core';
-import { Observable } from 'rxjs';
-import { IWEBGood } from './models/web.good';
-import { FireService } from './services/fire.service';
+import { LoadOptions } from './option.reducer';
+import { Store } from '@ngrx/store';
+import { Component, OnInit } from '@angular/core';
+import { AppState } from './reducers';
+
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'deliveryonec';
  
 
-  constructor(private db : FireService) {}
+  constructor(private store : Store<AppState>) {}
 
   LogOut() {
  
   }
+
+  ngOnInit() {
+    this.store.dispatch(LoadOptions());
+  }
+
+  OnExternal1CValueChange(el){
+    if(el.value=="options") {
+      this.store.dispatch(LoadOptions());
+
+    }
+    
+
+  }
+
 
 }

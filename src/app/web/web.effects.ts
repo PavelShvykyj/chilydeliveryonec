@@ -17,7 +17,7 @@ export class WebEffects {
     loadOnecGoods$ = createEffect(() =>
         this.actions$.pipe(
             ofType(WebActions.loadAllWebGoods),
-            concatMap(action => {console.log('web effect'); return this.WebServise.GetAllGoods();  }),
+            concatMap(action => { return this.WebServise.GetAllGoods();  }),
             map(allgoods => allWebGoodsLoaded({ ...allgoods }))
         )
     );

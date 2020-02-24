@@ -2,8 +2,6 @@ import { selectGoodsByParent, selectNotInWeb, selectGoodByName, selectGoodBySele
 import { AppState } from './../../reducers/index';
 import { Store, select } from '@ngrx/store';
 import { ITolbarCommandsList } from './../../models/toolbar.commandslist';
-import { element } from 'protractor';
-
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { OnecGoodsDatasourseService } from '../onec.goods.datasourse.service';
 import { LentaToolbarComponent } from 'src/app/baseelements/lenta-toolbar/lenta-toolbar.component';
@@ -28,7 +26,13 @@ export class OnecGoodsListComponent implements OnInit {
   @ViewChild(LentaToolbarComponent, {static: false})
   toolbar: LentaToolbarComponent;
 
-  elements$ : Observable<IONECGood[]>; //= this.ds.dataSourse$;
+  elements$ : Observable<IONECGood[]>; 
+  allelements$ : Observable<IONECGood[]>; 
+  blocklenth:number = 50;
+  startindex:number = 0;
+  blocks:number[] = [0];
+
+
   toolbarcommands : ITolbarCommandsList[] = [
     {
       commandName: "refresh",
@@ -55,13 +59,21 @@ export class OnecGoodsListComponent implements OnInit {
   constructor(public ds : OnecGoodsDatasourseService, private store: Store<AppState>) { }
 
   ngOnInit() {
-    this.elements$ = this.store.pipe(select(selectGoodsByParent,{parentid:undefined})); 
+    this.allelements$ = this.store.pipe(select(selectGoodsByParent,{parentid:undefined})); 
+    this.UpdateGoodsview();
   }
+
+  UpdateGoodsview() {
+    
+    this.elements$ = this.allelements$.pipe(map(goods => {this.UpdateBlocks(goods.length);  return goods.slice(this.startindex,Math.min(this.startindex+this.blocklenth, goods.length))}));
+  }
+
 
   OnGoodClicked(item: IONECGood) {
     if(item.isFolder) {
       //this.ds.GetList(item.id);
-      this.elements$ = this.store.pipe(select(selectGoodsByParent,{parentid:item.id})); 
+      this.allelements$ = this.store.pipe(select(selectGoodsByParent,{parentid:item.id})); 
+      this.UpdateGoodsview();
       this.toolbar.AddElement(item);
     } else {
      
@@ -82,17 +94,19 @@ export class OnecGoodsListComponent implements OnInit {
 
   OnLentaElementClicked(event : IBaseGood) {
     if(event == undefined) {
-      this.elements$ = this.store.pipe(select(selectGoodsByParent,{parentid:undefined})); 
+      this.allelements$ = this.store.pipe(select(selectGoodsByParent,{parentid:undefined})); 
     } else {
-      this.elements$ = this.store.pipe(select(selectGoodsByParent,{parentid:event.id})); 
+      this.allelements$ = this.store.pipe(select(selectGoodsByParent,{parentid:event.id})); 
     }
+    this.UpdateGoodsview();
   }
 
   OnToolbarCommandClicked(event : string) {
     switch (event) {
       case "refresh":
         
-        this.elements$ = this.store.pipe(select(selectGoodsByParent,{parentid:this.GetCurrentParent()})); 
+        this.allelements$ = this.store.pipe(select(selectGoodsByParent,{parentid:this.GetCurrentParent()})); 
+        this.UpdateGoodsview(); 
         this.NameFilterValue='';
         break;
       case "upload":
@@ -106,7 +120,8 @@ export class OnecGoodsListComponent implements OnInit {
 
         break;
       case "difference":
-        this.elements$ = this.store.pipe(select(selectNotInWeb)); 
+        this.allelements$ = this.store.pipe(select(selectNotInWeb));
+        this.UpdateGoodsview(); 
         break;
         
       default:
@@ -121,14 +136,14 @@ export class OnecGoodsListComponent implements OnInit {
 
     if(this.NameFilterValue.length == 0 ){
       
-      this.elements$ = this.store.pipe(select(selectGoodsByParent,{parentid:this.GetCurrentParent()})); 
+      this.allelements$ = this.store.pipe(select(selectGoodsByParent,{parentid:this.GetCurrentParent()})); 
     } else {
       // заменям пробелы \s* на любое количество любых сиволов (".*")
       const reg:string  = '.*'+this.NameFilterValue.replace( /\s/g, ".*")+'.*';
       
-      this.elements$ = this.store.pipe(select(selectGoodByName,reg));
+      this.allelements$ = this.store.pipe(select(selectGoodByName,reg));
     }
-    
+    this.UpdateGoodsview();
     
   }
 
@@ -144,6 +159,21 @@ export class OnecGoodsListComponent implements OnInit {
     }
     return  parentid;
 
+  }
+
+  UpdateBlocks(quontity:number) {
+    this.blocks = [];
+    this.startindex = 0;
+    let index = 0;
+    do {
+      this.blocks.push(index);
+      index = index + this.blocklenth;
+    } while (index<quontity)
+  }
+
+  OnBlockClick(block) {
+    this.startindex = block;
+    this.elements$ = this.allelements$.pipe(map(goods => goods.slice(this.startindex,this.startindex+ this.blocklenth)))
   }
 
 }

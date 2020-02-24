@@ -1,10 +1,10 @@
 import { IONECGood } from './../models/onec.good';
 import { IWEBGood, IWEBGoodWithFilials } from './../models/web.good';
-import { element } from 'protractor';
 import { WebState } from './reducers/index';
 import * as fromWeb from './reducers/index';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { Dictionary } from '@ngrx/entity';
+import { selectOptionState } from '../option.selectors';
 
 /// ОБЩИЕ 
 
@@ -83,7 +83,8 @@ function GetByname(dirtygoods:Dictionary<IONECGood>,goods:IWEBGood[],props:strin
 export const selectNotInONEC = createSelector(
     selectAllDirtyWebEntities,
     selectAllWebGoods,
-    (dirtygoods,goods,props) => GetNotInOnC(dirtygoods,goods,props)
+    selectOptionState,
+    (dirtygoods,goods,props) => GetNotInOnC(dirtygoods,goods,props.filialname)
 
 )
 

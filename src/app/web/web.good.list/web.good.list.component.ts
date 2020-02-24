@@ -12,6 +12,7 @@ import { IBaseGood } from 'src/app/models/base.good';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { Update } from '@ngrx/entity';
 import { statusWebSelectedGanged } from '../web.actions';
+import { map } from 'rxjs/operators';
 
 
 
@@ -25,8 +26,14 @@ export class WebGoodListComponent implements OnInit {
   @ViewChild(LentaToolbarComponent, {static: false})
   toolbar: LentaToolbarComponent;
 
-  filialname:string="vopac";
-  elements$ : Observable<IWEBGoodWithFilials[]>; //= this.ds.dataSourse$;
+  
+  elements$ : Observable<IWEBGoodWithFilials[]>; 
+  allelements$ : Observable<IWEBGoodWithFilials[]>; 
+  blocklenth:number = 50;
+  startindex:number = 0;
+  blocks:number[] = [0];
+
+
   toolbarcommands : ITolbarCommandsList[] = [
     {
       commandName: "refresh",
@@ -53,14 +60,16 @@ export class WebGoodListComponent implements OnInit {
   constructor(public ds : WebGoodsDatasourseService, private store: Store<AppState>) { }
 
   ngOnInit() {
-    this.elements$ = this.store.pipe(select(selectGoodsByParent,{parentid:undefined}));
+    this.allelements$ = this.store.pipe(select(selectGoodsByParent,{parentid:undefined}));
+    this.UpdateGoodsview();
   }
 
   OnGoodClicked(item: IWEBGood) {
     if(item.isFolder) {
       //this.ds.GetList(item.id);
-      this.elements$ = this.store.pipe(select(selectGoodsByParent,{parentid:item.id})); 
+      this.allelements$ = this.store.pipe(select(selectGoodsByParent,{parentid:item.id})); 
       this.toolbar.AddElement(item);
+      this.UpdateGoodsview();
     } else {
      
     }
@@ -80,25 +89,26 @@ export class WebGoodListComponent implements OnInit {
   OnLentaElementClicked(event : IBaseGood) {
     if(event == undefined) {
       //this.ds.GetList(undefined);
-      this.elements$ = this.store.pipe(select(selectGoodsByParent,{parentid:undefined})); 
+      this.allelements$ = this.store.pipe(select(selectGoodsByParent,{parentid:undefined})); 
     } else {
       //this.ds.GetList(event.id);
-      this.elements$ = this.store.pipe(select(selectGoodsByParent,{parentid:event.id})); 
+      this.allelements$ = this.store.pipe(select(selectGoodsByParent,{parentid:event.id})); 
     }
-    
+    this.UpdateGoodsview();
   }
 
   OnToolbarCommandClicked(event : string) {
     switch (event) {
       case "refresh":
         //this.ds.GetList(undefined);
-        this.elements$ = this.store.pipe(select(selectGoodsByParent,{parentid: this.GetCurrentParent()})); 
+        this.allelements$ = this.store.pipe(select(selectGoodsByParent,{parentid: this.GetCurrentParent()})); 
         this.NameFilterValue='';
+        this.UpdateGoodsview();
         break;
       case "difference":
         //alert("Команда upload");
-        this.elements$ = this.store.pipe(select(selectNotInONEC,this.filialname));
-
+        this.allelements$ = this.store.pipe(select(selectNotInONEC));
+        this.UpdateGoodsview();
         break;
       case "download":
         //alert("Команда download");
@@ -114,12 +124,13 @@ export class WebGoodListComponent implements OnInit {
   OnNameFilterInput() {
     if(this.NameFilterValue.length == 0 ){
       
-      this.elements$ = this.store.pipe(select(selectGoodsByParent,{parentid:this.GetCurrentParent()})); 
+      this.allelements$ = this.store.pipe(select(selectGoodsByParent,{parentid:this.GetCurrentParent()})); 
     } else {
       // заменям пробелы \s* на любое количество любых сиволов (".*")
       const reg = this.NameFilterValue.replace( /\s*/g, ".*");
-      this.elements$ = this.store.pipe(select(selectGoodByName,reg));
+      this.allelements$ = this.store.pipe(select(selectGoodByName,reg));
     }
+    this.UpdateGoodsview();
   }
 
   OnNameFilterCleared() {
@@ -136,5 +147,23 @@ export class WebGoodListComponent implements OnInit {
 
   }
 
+  UpdateBlocks(quontity:number) {
+    this.blocks = [];
+    this.startindex = 0;
+    let index = 0;
+    do {
+      this.blocks.push(index);
+      index = index + this.blocklenth;
+    } while (index<quontity)
+  }
+
+  OnBlockClick(block) {
+    this.startindex = block;
+    this.elements$ = this.allelements$.pipe(map(goods => goods.slice(this.startindex,this.startindex+ this.blocklenth)))
+  }
+
+  UpdateGoodsview() {
+    this.elements$ = this.allelements$.pipe(map(goods => {this.UpdateBlocks(goods.length);  return goods.slice(this.startindex,Math.min(this.startindex+this.blocklenth, goods.length))}));
+  }
 
 }

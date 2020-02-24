@@ -75,7 +75,7 @@ export class WebGoodsDatasourseService implements IGoodsListDatasourse {
   constructor(private db: AngularFirestore, private store: Store<AppState>) { }
 
   GetList(parentID: string | undefined) {
-    console.log("web  get lits");
+    
     // this.store.pipe(
     //   select(areAllWebGoodsLoaded),
     //   filter(WebGoodsLoaded => {console.log("WebGoodsLoaded",WebGoodsLoaded);  return !WebGoodsLoaded} ),
@@ -87,19 +87,19 @@ export class WebGoodsDatasourseService implements IGoodsListDatasourse {
 
   GetAllGoods() : Observable<{goods: IWEBGood[], dirtygoods:IONECGood[]}> {
 
-    const webgoods$ = this.db.collection('web.goods')
+    const webgoods$ = this.db.collection('web.goods', ref => ref.orderBy("name"))
     .snapshotChanges()
     .pipe(map(res =>
-      { console.log(res); 
+      {  
         return res.map(element  => { 
           return {...(element.payload.doc.data() as object),
                    isSelected:false, 
                    id:element.payload.doc.id}} ) as IWEBGood[];}),first());
 
-    const dirtywebgoods$ = this.db.collection('onec.goods')
+    const dirtywebgoods$ = this.db.collection('onec.goods', ref => ref.orderBy("name"))
     .snapshotChanges()
     .pipe(map(res =>
-      { console.log(res); 
+      { 
         return res.map(element  => { 
           return {...(element.payload.doc.data() as object),
                   isSelected:false, 
@@ -112,7 +112,7 @@ export class WebGoodsDatasourseService implements IGoodsListDatasourse {
   }
 
   UpdateByONEC(data: IONECGood) : Observable<IONECGood> {
-   console.log("externalid",data.externalid);
+   
 
    if(data.externalid=="" || data.externalid == undefined) {
     

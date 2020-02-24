@@ -5,6 +5,7 @@ import { Injectable } from '@angular/core';
 import { IBaseGood } from '../models/base.good';
 import { Observable, of, BehaviorSubject } from 'rxjs';
 import { IONECGood } from '../models/onec.good';
+import { OptionState } from '../option.reducer';
 
 @Injectable({
   providedIn: 'root'
@@ -81,7 +82,7 @@ export class OnecGoodsDatasourseService implements IGoodsListDatasourse{
         this.fake.push(element);
       }
       
-      console.log(this.fake.length);
+      
       
       
       this.dataEventer.next(this.fake);
@@ -110,6 +111,15 @@ export class OnecGoodsDatasourseService implements IGoodsListDatasourse{
   
 
 
+  }
+
+  LoadOptions() : Observable<{options:OptionState}> {
+    if(xForm1C == undefined) {
+      return of({options:{filialname:"unknown"}});
+    } else {
+      const options : {options:OptionState} = JSON.parse(xForm1C.LoadOptions()) ;
+      return of(options);
+    }
   }
 
 }

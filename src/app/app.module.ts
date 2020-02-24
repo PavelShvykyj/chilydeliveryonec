@@ -23,6 +23,7 @@ import { WebModule } from './web/web.module';
 import { AuthModule } from './auth/auth.module';
 import { ExchangeModule } from './exchange/exchange.module';
 import { AppEffects } from './app.effects';
+import { OptionsEffects } from './options.effects';
 
 
 
@@ -48,7 +49,7 @@ import { AppEffects } from './app.effects';
     FlexLayoutModule,
     StoreModule.forRoot(reducers, { metaReducers }),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
-    EffectsModule.forRoot([AppEffects]),
+    EffectsModule.forRoot([AppEffects,OptionsEffects]),
     StoreRouterConnectingModule.forRoot({
       stateKey: 'router',
       routerState: RouterState.Minimal
