@@ -4,6 +4,7 @@ import { LoginComponent } from './auth/login/login.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { GoodsResolver } from './exchange/resolvers/goods.resolver';
+import { IsLoggedInGuard } from './isloged.guard';
 
 const routes: Routes = [
   {
@@ -14,12 +15,14 @@ const routes: Routes = [
   {
     path: 'goods',
     component: GoodsExchangeComponent,
-    resolve : {goods : GoodsResolver}
+    resolve : {goods : GoodsResolver},
+    canActivate:[IsLoggedInGuard]
   },
 
   {
     path: 'orders',
-    component: OrdersExchangeComponent
+    component: OrdersExchangeComponent,
+    canActivate:[IsLoggedInGuard]
   },
   
   { path: '**', 

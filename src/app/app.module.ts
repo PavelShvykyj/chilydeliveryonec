@@ -24,6 +24,7 @@ import { AuthModule } from './auth/auth.module';
 import { ExchangeModule } from './exchange/exchange.module';
 import { AppEffects } from './app.effects';
 import { OptionsEffects } from './options.effects';
+import { IsLoggedInGuard } from './isloged.guard';
 
 
 
@@ -65,7 +66,7 @@ import { OptionsEffects } from './options.effects';
     
 
   ], 
-  providers: [FireService],
+  providers: [FireService,IsLoggedInGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

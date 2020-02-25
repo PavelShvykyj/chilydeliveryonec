@@ -28,7 +28,7 @@ export class OnecGoodsListComponent implements OnInit {
 
   elements$ : Observable<IONECGood[]>; 
   allelements$ : Observable<IONECGood[]>; 
-  blocklenth:number = 50;
+  blocklenth:number = 30;
   startindex:number = 0;
   blocks:number[] = [0];
 

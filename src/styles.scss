@@ -2,6 +2,7 @@
 @import url("https://fonts.googleapis.com/icon?family=Material+Icons");
 
 @import '~@angular/material/theming';
+@import "../node_modules/firebaseui/dist/firebaseui.css";
 
 // Create a config with the default typography levels.
 $config: mat-typography-config($title: mat-typography-level(12px, 12px, 400),

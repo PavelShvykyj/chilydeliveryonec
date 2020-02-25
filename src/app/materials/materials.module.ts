@@ -9,6 +9,7 @@ import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatGridListModule} from '@angular/material/grid-list';
 import {MatInputModule} from '@angular/material/input';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [],
@@ -24,7 +25,8 @@ import {MatInputModule} from '@angular/material/input';
     MatButtonToggleModule,
     MatCheckboxModule,
     MatGridListModule,
-    MatInputModule
+    MatInputModule,
+    MatSnackBarModule
   ]
 })
 export class MaterialsModule { }

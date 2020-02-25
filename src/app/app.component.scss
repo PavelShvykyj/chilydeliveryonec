@@ -30,6 +30,11 @@ $app-theme: mat-light-theme($app-primary, $app-accent, $app-warn);
     font-weight: inherit; 
 }
 
+.avatar {
+  max-height: 35px;
+  border-radius: 4px;
+}
+
 mat-icon {
   font-family: 'Material Icons' !important;
 }
