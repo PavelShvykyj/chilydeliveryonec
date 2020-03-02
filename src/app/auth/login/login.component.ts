@@ -22,6 +22,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     const  uiConfig = {
+      //signInFlow: 'popup',
       signInOptions: [
         firebase.auth.GoogleAuthProvider.PROVIDER_ID,
         firebase.auth.EmailAuthProvider.PROVIDER_ID

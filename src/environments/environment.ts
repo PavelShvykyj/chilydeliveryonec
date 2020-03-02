@@ -11,8 +11,8 @@ export const environment = {
     projectId: "chilidelivery-42f84",
     storageBucket: "chilidelivery-42f84.appspot.com",
     messagingSenderId: "752378125984",
-    appId: "1:752378125984:web:0143960ef50469e759f3c5",
-    measurementId: "G-WLN85CW2JW"
+    appId: "1:752378125984:web:4c3419aaa305044759f3c5",
+    measurementId: "G-BRBCT1Y6VR"
   }
 };
 
