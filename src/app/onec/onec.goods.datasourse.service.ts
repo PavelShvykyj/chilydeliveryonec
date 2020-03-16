@@ -1,11 +1,15 @@
+
+import { Update } from '@ngrx/entity';
 import { element } from 'protractor';
 
 import { IGoodsListDatasourse } from './../models/goods.list.datasourse';
 import { Injectable } from '@angular/core';
 import { IBaseGood } from '../models/base.good';
-import { Observable, of, BehaviorSubject } from 'rxjs';
+import { Observable, of, BehaviorSubject, from } from 'rxjs';
 import { IONECGood } from '../models/onec.good';
 import { OptionState } from '../option.reducer';
+import { AngularFirestore } from '@angular/fire/firestore';
+import { tap, map, first, filter, concatMap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -15,51 +19,9 @@ export class OnecGoodsDatasourseService implements IGoodsListDatasourse{
   private dataEventer : BehaviorSubject<IONECGood[]> = new BehaviorSubject([]);
   public dataSourse$ : Observable<IONECGood[]> = this.dataEventer.asObservable();
 
-  private fake : IONECGood[] = [
-    {
-      isFolder:true,
-      parentid:undefined,
-      name: "fake folder 1",
-      filial: "vopak",
-      id:"1",
-      isSelected:false,
-      externalid:""
-    },
+  private fake : IONECGood[] = []
 
-    {
-      isFolder:true,
-      parentid:undefined,
-      name: "fake folder long long name 2",
-      filial: "vopak",
-      id:"2",
-      isSelected:false,
-      externalid:""
-    },
-
-    {
-      isFolder:false,
-      parentid:"1",
-      name: "fake item 1 with long name пица ароматная большая ням ням",
-      filial: "vopak",
-      id:"3",
-      isSelected:false,
-      externalid:""
-    },
-
-    {
-      isFolder:false,
-      parentid:undefined,
-      name: "МАЛИНОВА НАСТОЯНКА",
-      filial: "vopak",
-      id:"4",
-      isSelected:false,
-      externalid:""
-    }
-
-
-  ]
-
-  constructor() {
+  constructor(private fdb: AngularFirestore) {
     
     
     
@@ -77,7 +39,7 @@ export class OnecGoodsDatasourseService implements IGoodsListDatasourse{
           filial: "vopak",
           id:(4+index).toString(),
           isSelected:false,
-          externalid:""
+          externalid:"PCcbK1WrZPSXYXMpFXfJ"
         }
         this.fake.push(element);
       }
@@ -106,11 +68,30 @@ export class OnecGoodsDatasourseService implements IGoodsListDatasourse{
       return of(updatedGood)
   
     }
+  }
 
-
-  
-
-
+  DeleteElement( good: Update<IONECGood>, externalid:string) : Observable<Update<IONECGood>>  {
+    /// нельзя удалять привязанные елементы поэтому если елемент привязан - изменения содержат только снятие галки
+    
+    return  this.fdb.collection('web.goods', ref=>ref.where("filials",'array-contains',externalid))
+    .snapshotChanges()
+    .pipe(
+        map(goods => goods.length),
+        first(),
+        concatMap(count => {
+          
+          if (count == 0) {
+            return from(this.fdb.collection('onec.goods').doc(externalid).delete()).pipe(map(()=>{
+              if(xForm1C != undefined) {
+                xForm1C.UnchainElement(externalid);
+              }  
+                return good;
+              }))
+          } else {
+            good.changes.externalid=externalid;
+            return of(good)
+          }
+        }));
   }
 
   LoadOptions() : Observable<{options:OptionState}> {

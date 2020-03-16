@@ -5,8 +5,8 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { OnecActions } from './onec.actions.types';
 import { OnecGoodsDatasourseService } from './onec.goods.datasourse.service';
-import { concatMap, map } from 'rxjs/operators';
-import { allGoodsLoaded, updateAfterUpload } from './onec.actions';
+import { concatMap, map, tap } from 'rxjs/operators';
+import { allGoodsLoaded, updateAfterUpload, onecGoodDeleted } from './onec.actions';
 import { WebActions } from '../web/wtb.action.types';
 
 
@@ -20,6 +20,15 @@ export class OnecEffects {
             map(goods => allGoodsLoaded({ goods }))
         )
     );
+
+    deleteOnecGood$ = createEffect(() =>
+    this.actions$.pipe(
+        ofType(OnecActions.deleteOnecGood),
+        
+        concatMap(good => this.OnecServise.DeleteElement(good.update,good.externalid)),  
+        map(good => onecGoodDeleted({update:good}))
+    ))
+
 
     updateAfterUpload$ = createEffect(() =>
     this.actions$.pipe(

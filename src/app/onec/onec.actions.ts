@@ -6,3 +6,6 @@ export const loadAllGoods = createAction("[EXCHANGE GOODS RESOLVER] Load onec go
 export const allGoodsLoaded = createAction("[LOAD ONEC GOODS EFFECT] Onec goods loaded",props<{goods: IONECGood[]}>());
 export const statusSelectedGanged = createAction("[ONEC GOODS LIST COMPONENT]  Status selected changed",props<{update: Update<IONECGood>}>());
 export const updateAfterUpload = createAction("[LOAD ONEC GOODS EFFECT] Onec good updated after upload",props<{UploadUpdate: Update<IONECGood>}>());
+
+export const deleteOnecGood = createAction("[ONEC GOODS LIST COMPONENT] Delete Onec good ",props<{update: Update<IONECGood>, externalid:string}>());
+export const onecGoodDeleted = createAction("[DELETE ONEC GOODS EFFECT]  Onec good deleted",props<{update: Update<IONECGood>}>());

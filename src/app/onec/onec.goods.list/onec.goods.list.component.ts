@@ -10,7 +10,7 @@ import { Observable } from 'rxjs';
 import { IBaseGood } from 'src/app/models/base.good';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { tap, first, finalize, map } from 'rxjs/operators';
-import { loadAllGoods, statusSelectedGanged } from '../onec.actions';
+import { loadAllGoods, statusSelectedGanged, deleteOnecGood } from '../onec.actions';
 import { Update } from '@ngrx/entity';
 import { uploadOnecSelected } from 'src/app/web/web.actions';
 
@@ -45,7 +45,11 @@ export class OnecGoodsListComponent implements OnInit {
       buttonName:"",
       iconeName:'cloud_upload'
     },
-
+    {
+      commandName: "delete",
+      buttonName:"",
+      iconeName:'delete'
+    },
     {
       commandName: "difference",
       buttonName:"",
@@ -91,6 +95,26 @@ export class OnecGoodsListComponent implements OnInit {
     
   }
 
+  DeleteSelected() {
+    this.store.pipe(select(selectGoodBySelection),
+    first(),
+    tap(goods => { 
+      console.log(goods);
+      goods.forEach(good => {
+        console.log(good);
+        if(good.externalid!=undefined && good.externalid!="") {
+          const update : Update<IONECGood> = {
+            id:good.id,
+            changes:{externalid:"",isSelected:false}
+          }
+          this.store.dispatch(deleteOnecGood({update,externalid:good.externalid}))
+        }
+      }); 
+    }),
+    ).subscribe();
+
+  }
+
 
   OnLentaElementClicked(event : IBaseGood) {
     if(event == undefined) {
@@ -116,9 +140,12 @@ export class OnecGoodsListComponent implements OnInit {
         .subscribe(
           selectedgoods  => {selectedgoods.forEach(good => this.store.dispatch(uploadOnecSelected({good})))}
         );
-        
-
         break;
+      case "delete":
+          console.log('event delete');  
+          this.DeleteSelected();
+          break;
+  
       case "difference":
         this.allelements$ = this.store.pipe(select(selectNotInWeb));
         this.UpdateGoodsview(); 

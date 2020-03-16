@@ -35,22 +35,23 @@ export class GoodsResolver implements Resolve<any> {
             finalize(() => this.loading = false)
         );
 
-        let WebChain$ = this.store.pipe(
-            select(areAllWebGoodsLoaded), 
-            tap(WebGoodsLoaded => {
+        //// Отключаем обращение к FB
+        // let WebChain$ = this.store.pipe(
+        //     select(areAllWebGoodsLoaded), 
+        //     tap(WebGoodsLoaded => {
                 
-                if (!this.webloading && !WebGoodsLoaded) {
-                    this.webloading = true;
-                    this.store.dispatch(loadAllWebGoods());
-                }
-            }),
-            filter(WebGoodsLoaded => WebGoodsLoaded),
-            first(),
-            finalize(() => this.webloading = false)
-        );
+        //         if (!this.webloading && !WebGoodsLoaded) {
+        //             this.webloading = true;
+        //             this.store.dispatch(loadAllWebGoods());
+        //         }
+        //     }),
+        //     filter(WebGoodsLoaded => WebGoodsLoaded),
+        //     first(),
+        //     finalize(() => this.webloading = false)
+        // );
         
-        return combineLatest(OneCChain$,WebChain$)          
-
+        //return combineLatest(OneCChain$,WebChain$)          
+        return combineLatest(OneCChain$)              
 
     }
 
