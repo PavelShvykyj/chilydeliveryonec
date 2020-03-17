@@ -122,7 +122,8 @@ export class WebGoodsDatasourseService implements IGoodsListDatasourse {
       parentid: data.parentid == undefined ? "" : data.parentid,
       isFolder:data.isFolder,
       name:data.name,
-      filial:data.filial
+      filial:data.filial,
+      lastmodified:new Date()
     } 
 
     return from(this.db.collection('onec.goods').add(dataToUpdate)).pipe(map(docref => {return {...data,id:docref.id,externalid:data.id,isSelected:false}   } ));
@@ -133,7 +134,8 @@ export class WebGoodsDatasourseService implements IGoodsListDatasourse {
       parentid:data.parentid == undefined ? "" : data.parentid,
       isFolder:data.isFolder,
       name:data.name,
-      filial:data.filial
+      filial:data.filial,
+      lastmodified:new Date()
     } 
 
     
