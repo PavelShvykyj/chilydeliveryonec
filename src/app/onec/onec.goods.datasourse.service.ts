@@ -10,6 +10,7 @@ import { IONECGood } from '../models/onec.good';
 import { OptionState } from '../option.reducer';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { tap, map, first, filter, concatMap } from 'rxjs/operators';
+import { WebGoodsDatasourseService } from '../web/web.goods.datasourse.service';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +22,7 @@ export class OnecGoodsDatasourseService implements IGoodsListDatasourse{
 
   private fake : IONECGood[] = []
 
-  constructor(private fdb: AngularFirestore) {
+  constructor(private fdb: AngularFirestore, private fdbservise:WebGoodsDatasourseService) {
     
     
     
@@ -81,7 +82,7 @@ export class OnecGoodsDatasourseService implements IGoodsListDatasourse{
         concatMap(count => {
           
           if (count == 0) {
-            return from(this.fdb.collection('onec.goods').doc(externalid).delete()).pipe(map(()=>{
+            return this.fdbservise.DeleteOnecGood(externalid).pipe(map(()=>{
               if(xForm1C != undefined) {
                 xForm1C.UnchainElement(externalid);
               }  

@@ -3,6 +3,7 @@ import { IFireBaseDirtyGood } from './../models/firebase.dirtygood';
 
 import { Injectable } from '@angular/core';
 import * as firebase from 'firebase/app';
+import 'firebase/firestore';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { IONECGood } from '../models/onec.good';
 import { IGoodsListDatasourse } from '../models/goods.list.datasourse';
@@ -15,8 +16,17 @@ import { environment } from 'src/environments/environment';
 import { Update } from '@ngrx/entity';
 
 
-// firebase.initializeApp(environment.firebase);
+//firebase.initializeApp(environment.firebase);
 // const idfield = firebase.firestore.FieldPath.documentId();
+
+export function convertDateToUTC(date) {
+  return new Date(date.getUTCFullYear(),
+    date.getUTCMonth(),
+    date.getUTCDate(),
+    date.getUTCHours(),
+    date.getUTCMinutes(),
+    date.getUTCSeconds());
+}
 
 @Injectable({
   providedIn: 'root'
@@ -74,6 +84,10 @@ export class WebGoodsDatasourseService implements IGoodsListDatasourse {
 
   constructor(private db: AngularFirestore, private store: Store<AppState>) { }
 
+  public get timestamp() {
+    return firebase.firestore.FieldValue.serverTimestamp();
+  }
+
   GetList(parentID: string | undefined) {
     
     // this.store.pipe(
@@ -111,31 +125,40 @@ export class WebGoodsDatasourseService implements IGoodsListDatasourse {
 
   }
 
+  DeleteOnecGood(id:string) : Observable<void> {
+    return from(this.db.collection('onec.goods').doc(id).update({
+      isDeleted:true,
+      lastmodified: this.timestamp   
+    }))
+  }
+
   UpdateByONEC(data: IONECGood) : Observable<IONECGood> {
    
 
    if(data.externalid=="" || data.externalid == undefined) {
     
     /// внешний код для фиребасе = внутренний от 1С  
-    const dataToUpdate: IFireBaseDirtyGood = {
+    const dataToUpdate = {
       externalid:data.id,
       parentid: data.parentid == undefined ? "" : data.parentid,
       isFolder:data.isFolder,
       name:data.name,
+      isDeleted:false,
       filial:data.filial,
-      lastmodified:new Date()
+      lastmodified:this.timestamp
     } 
 
     return from(this.db.collection('onec.goods').add(dataToUpdate)).pipe(map(docref => {return {...data,id:docref.id,externalid:data.id,isSelected:false}   } ));
    } else {
 
-    const dataToUpdate: IFireBaseDirtyGood = {
+    const dataToUpdate = {
       externalid:data.id,
       parentid:data.parentid == undefined ? "" : data.parentid,
       isFolder:data.isFolder,
+      isDeleted:false,
       name:data.name,
       filial:data.filial,
-      lastmodified:new Date()
+      lastmodified: this.timestamp
     } 
 
     
