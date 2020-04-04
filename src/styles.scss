@@ -30,3 +30,30 @@ $app-theme: mat-light-theme($app-primary, $app-accent, $app-warn);
 mat-icon{
     font-family: 'Material Icons' !important;
   }
+
+  mat-card {
+    border-radius: 0px !important;
+  }
+  
+  ///// do button toggle group responsive
+  .mat-button-toggle-label {
+    flex: 1 1 100%;
+    box-sizing: border-box;
+    align-items: center;
+    flex-direction: row;
+    display: flex;
+  
+    .mat-button-toggle-label-content {
+      text-align: center;
+      flex: 1 1 100%;
+    }
+  }
+  
+  .primary {
+    background-color: map-get($mat-light-blue, 700);
+    color: map-get($mat-light-blue, 100);
+  }
+  
+  .secondary {
+    background-color: map-get($mat-grey, 200);
+  }  

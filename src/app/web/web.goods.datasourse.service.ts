@@ -7,7 +7,7 @@ import 'firebase/firestore';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { IONECGood } from '../models/onec.good';
 import { IGoodsListDatasourse } from '../models/goods.list.datasourse';
-import { Observable, BehaviorSubject, combineLatest, from } from 'rxjs';
+import { Observable, BehaviorSubject, combineLatest, from, pipe, of } from 'rxjs';
 import { map, filter, concatMap, first, tap } from 'rxjs/operators';
 import { select, Store } from '@ngrx/store';
 import { areAllWebGoodsLoaded } from './web.selectors';
@@ -101,27 +101,30 @@ export class WebGoodsDatasourseService implements IGoodsListDatasourse {
 
   GetAllGoods() : Observable<{goods: IWEBGood[], dirtygoods:IONECGood[]}> {
 
-    const webgoods$ = this.db.collection('web.goods', ref => ref.orderBy("name"))
-    .snapshotChanges()
-    .pipe(map(res =>
-      {  
-        return res.map(element  => { 
-          return {...(element.payload.doc.data() as object),
-                   isSelected:false, 
-                   id:element.payload.doc.id}} ) as IWEBGood[];}),first());
+    return of({
+      goods: [], dirtygoods:[]
+    });
+    // const webgoods$ = this.db.collection('web.goods', ref => ref.orderBy("name"))
+    // .snapshotChanges()
+    // .pipe(map(res =>
+    //   {  
+    //     return res.map(element  => { 
+    //       return {...(element.payload.doc.data() as object),
+    //                isSelected:false, 
+    //                id:element.payload.doc.id}} ) as IWEBGood[];}),first());
 
-    const dirtywebgoods$ = this.db.collection('onec.goods', ref => ref.orderBy("name"))
-    .snapshotChanges()
-    .pipe(map(res =>
-      { 
-        return res.map(element  => { 
-          return {...(element.payload.doc.data() as object),
-                  isSelected:false, 
-                  id:element.payload.doc.id}} ) as IONECGood[];}),first());
+    // const dirtywebgoods$ = this.db.collection('onec.goods', ref => ref.orderBy("name"))
+    // .snapshotChanges()
+    // .pipe(map(res =>
+    //   { 
+    //     return res.map(element  => { 
+    //       return {...(element.payload.doc.data() as object),
+    //               isSelected:false, 
+    //               id:element.payload.doc.id}} ) as IONECGood[];}),first());
                            
 
-    return combineLatest(webgoods$,dirtywebgoods$)
-    .pipe(map(element=> {return { goods: element[0], dirtygoods:element[1]}}),first())
+    // return combineLatest(webgoods$,dirtywebgoods$)
+    // .pipe(map(element=> {return { goods: element[0], dirtygoods:element[1]}}),first())
 
   }
 
@@ -129,7 +132,7 @@ export class WebGoodsDatasourseService implements IGoodsListDatasourse {
     return from(this.db.collection('onec.goods').doc(id).update({
       isDeleted:true,
       lastmodified: this.timestamp   
-    }))
+    })).pipe(first())
   }
 
   UpdateByONEC(data: IONECGood) : Observable<IONECGood> {
@@ -148,7 +151,7 @@ export class WebGoodsDatasourseService implements IGoodsListDatasourse {
       lastmodified:this.timestamp
     } 
 
-    return from(this.db.collection('onec.goods').add(dataToUpdate)).pipe(map(docref => {return {...data,id:docref.id,externalid:data.id,isSelected:false}   } ));
+    return from(this.db.collection('onec.goods').add(dataToUpdate)).pipe(map(docref => {return {...data,id:docref.id,externalid:data.id,isSelected:false}   } ),first());
    } else {
 
     const dataToUpdate = {
@@ -162,7 +165,7 @@ export class WebGoodsDatasourseService implements IGoodsListDatasourse {
     } 
 
     
-    return from(this.db.collection('onec.goods').doc(data.externalid).update(dataToUpdate)).pipe(map(() => {return {...data,id:data.externalid,externalid:data.id,isSelected:false}   } ));
+    return from(this.db.collection('onec.goods').doc(data.externalid).update(dataToUpdate)).pipe(map(() => {return {...data,id:data.externalid,externalid:data.id,isSelected:false}   } ),first());
 
 
    }

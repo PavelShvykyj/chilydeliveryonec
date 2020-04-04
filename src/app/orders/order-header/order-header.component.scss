@@ -1,0 +1,60 @@
+@import '~@angular/material/theming';
+
+// mat-list-item {
+//     height: 50px !important;
+//     max-height: 50px !important;
+// }
+
+mat-card-title, mat-card-subtitle {
+    text-align: center;
+    margin-bottom: 0px !important;
+}
+
+mat-card-content {
+    margin-bottom: 0px !important;
+    border-left: 1px solid map-get($mat-grey, 200) !important;
+    border-right: 1px solid map-get($mat-grey, 200) !important;
+}
+
+.mat-card {
+    padding-top: 0px;
+    padding-bottom: 2px;
+
+}
+
+.mat-list-item-content {
+    padding-top: 5px !important;
+    padding-bottom: 5px !important;
+
+}
+
+.mat-list.mat-list-base {
+    padding-top: 0px !important;
+}
+
+.orderheadernumber {
+    font-weight: 700 !important;
+}
+
+.orderheaderphone ,  .orderheadcomment {
+    font-weight: 500 !important;
+}
+
+.orderheaderadress {
+    font-style: italic;
+}
+
+.spacer {
+    margin: auto;
+}
+
+mat-card-actions {
+    padding-top: 0px !important;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    max-width: 100%;
+    margin-left: 0px !important;
+    margin-right: 0px !important;
+    margin-bottom: 0px !important;
+}

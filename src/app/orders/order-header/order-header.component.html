@@ -1,0 +1,29 @@
+<mat-card>
+    <mat-card-subtitle class="secondary">
+       ЗАКАЗ : <span class="orderheadernumber">{{order.externalid}} </span> 
+    </mat-card-subtitle>
+    <mat-card-content>
+        <mat-list>
+            <mat-list-item> 
+                <h4 mat-line>Адрес : <span class="orderheaderadress"> {{order.addres}} </span> </h4>
+                <h4 mat-line>Тедефон: <span class="orderheaderphone">{{order.phone}} </span> </h4>
+                <h4 *ngIf="order.comment" mat-line>Комментарий</h4>
+                <p  *ngIf="order.comment" mat-line> <span class="orderheadcomment"> {{order.comment}} </span>  </p>    
+            </mat-list-item>
+        </mat-list>
+    </mat-card-content>
+    <mat-card-actions class="primary">
+        <button mat-button  [matMenuTriggerFor]='filial'> Изменить филиал </button>
+        <mat-menu #filial="matMenu" yPosition="above">
+            <button (click)="OnFilialSelected('cansel')" mat-menu-item>НЕ ИЗМЕНЯТЬ</button>
+            <button (click)="OnFilialSelected('luxor')" mat-menu-item>ЛЮКСОР</button>
+            <button (click)="OnFilialSelected('dastor')"mat-menu-item>ДАСТОР</button>
+            <button (click)="OnFilialSelected('vopak')"mat-menu-item>ВОПАК</button>
+        </mat-menu>
+        <span class="spacer"></span> 
+        <button mat-button (click)="TakeInWork()">  Принять в роботу </button>
+        
+    </mat-card-actions>
+
+</mat-card>
+

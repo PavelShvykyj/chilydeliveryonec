@@ -25,6 +25,10 @@ import { ExchangeModule } from './exchange/exchange.module';
 import { AppEffects } from './app.effects';
 import { OptionsEffects } from './options.effects';
 import { IsLoggedInGuard } from './isloged.guard';
+import { TelegramService } from './services/telegram.service';
+import { HttpClientModule } from '@angular/common/http';
+import { OrdersModule } from './orders/orders.module';
+import { AngularFireDatabaseModule } from '@angular/fire/database';
 
 
 
@@ -38,6 +42,7 @@ import { IsLoggedInGuard } from './isloged.guard';
   imports: [
     
     BrowserModule,
+    HttpClientModule,
     AppRoutingModule,
     MaterialsModule,
     ReactiveFormsModule,
@@ -47,6 +52,7 @@ import { IsLoggedInGuard } from './isloged.guard';
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
     AngularFirestoreModule,
+    AngularFireDatabaseModule,
     FlexLayoutModule,
     StoreModule.forRoot(reducers, { metaReducers }),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
@@ -60,13 +66,14 @@ import { IsLoggedInGuard } from './isloged.guard';
     OnecModule,
     WebModule,
     AuthModule,
-    ExchangeModule
+    ExchangeModule,
+    OrdersModule
     
     
     
 
   ], 
-  providers: [FireService,IsLoggedInGuard],
+  providers: [FireService,IsLoggedInGuard,TelegramService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

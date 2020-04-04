@@ -1,4 +1,4 @@
-<mat-toolbar color='primary'>
+<mat-toolbar *ngIf="isFullVersion" color='primary'>
   <span>Simple delivery (one c) </span>
 
   <span class="spacer"> </span>
@@ -28,7 +28,18 @@
 
 </mat-toolbar>
 
+<mat-toolbar *ngIf="!isFullVersion" color='primary'>
+  <button color='accent' mat-raised-button (click)="Relog()"> <mat-icon> refresh </mat-icon> </button>
+
+  <button *ngIf="(isLoggedIn$ | async)" color='accent' mat-raised-button (click)="LogOut()"> Logout </button>
+
+  <ng-container *ngIf="(pictureUrl$ | async) as pictureUrl" >
+    <img [src]="pictureUrl" class="avatar" >
+  </ng-container>
+
+</mat-toolbar>
 
 <router-outlet></router-outlet>
 
 <input #el hidden=true type="text" id="options" value="options"  (click)="OnExternal1CValueChange(el)">
+<input #elorder hidden=true type="text" id="orderinput" value="empty"  (click)="OnExternal1CValueChange(el)">

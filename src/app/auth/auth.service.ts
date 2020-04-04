@@ -11,10 +11,14 @@ import { AuthStausChanged } from './reducers';
 export class AuthService {
 
   private authState$: Observable<firebase.User>
+  private email : string;
+  private pass  : string;
+
 
   constructor(private afAuth: AngularFireAuth, private store: Store<AppState>) {
     this.authState$ = this.afAuth.authState;
     this.authState$.subscribe(user => {this.store.dispatch(AuthStausChanged({user}))});
+    
 
   }
 
@@ -22,8 +26,27 @@ export class AuthService {
     return this.authState$;
   }
 
+  SignInWithEmail(email:string,password:string) {
+    return this.afAuth.auth.signInWithEmailAndPassword(email,password)
+  }
+
   LogOut() {
     this.afAuth.auth.signOut();
+
+  }
+
+  set relogemail(value) {
+    this.email=value
+  }
+
+  set relogpass(value) {
+    this.pass=value;
+  } 
+
+  Relog() {
+    this.afAuth.auth.signOut()
+    .then(res=> this.SignInWithEmail(this.email,this.pass))
+    .catch(err=> this.SignInWithEmail("",""))
 
   }
 
