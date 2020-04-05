@@ -41,7 +41,7 @@ export class TelegramService {
    
     this.http.get(url, { params: params }).toPromise().catch(err=>{
       console.log('telegram ', err)
-    }).then(res=> {})
+    }).then(res=> {console.log('telegram ', res)})
 
 
    }

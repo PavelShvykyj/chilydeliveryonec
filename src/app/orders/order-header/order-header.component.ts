@@ -27,6 +27,7 @@ export class OrderHeaderComponent implements OnInit {
     {
       this.order.comment= `Перенаправлено из ${this.db.filialname}`
       this.order.filial = value;
+      
       this.tservice.SendMessage(this.db.filial,this.db.GetTformatedMessage(this.order));
     })
   }

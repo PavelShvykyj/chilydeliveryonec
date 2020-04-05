@@ -11,6 +11,8 @@ import {MatGridListModule} from '@angular/material/grid-list';
 import {MatInputModule} from '@angular/material/input';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatMenuModule} from '@angular/material/menu';
+import {LayoutModule} from '@angular/cdk/layout';
+
 @NgModule({
   declarations: [],
   imports: [
@@ -27,7 +29,8 @@ import {MatMenuModule} from '@angular/material/menu';
     MatGridListModule,
     MatInputModule,
     MatSnackBarModule,
-    MatMenuModule
+    MatMenuModule,
+    LayoutModule
   ]
 })
 export class MaterialsModule { }

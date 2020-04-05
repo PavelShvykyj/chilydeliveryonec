@@ -1,7 +1,10 @@
 
 <mat-card>
-<mat-button-toggle-group >
-    <mat-button-toggle [ngClass]="{'currentblock': block==startindex}" *ngFor="let block of blocks" [value]="block" (click)="OnBlockClick(block)"> {{block }} </mat-button-toggle>
-</mat-button-toggle-group>
+    <mat-card-subtitle>{{lastupdate | date: "shortTime"}}</mat-card-subtitle>
+    <mat-button-toggle-group >
+        <mat-button-toggle [ngClass]="{'currentblock': block==startindex}" *ngFor="let block of blocks" [value]="block" (click)="OnBlockClick(block)"> {{block }} </mat-button-toggle>
+    </mat-button-toggle-group>
 </mat-card>
+
 <order-header [order]="orderitem" *ngFor="let orderitem of orders"></order-header>
+

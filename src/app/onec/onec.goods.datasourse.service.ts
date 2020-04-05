@@ -97,7 +97,7 @@ export class OnecGoodsDatasourseService implements IGoodsListDatasourse{
 
   LoadOptions() : Observable<{options:OptionState}> {
     if(xForm1C == undefined) {
-      return of({options:{filialname:"luxor"}});
+      return of({options:{filialname:"vopak"}});
     } else {
       const options : {options:OptionState} = JSON.parse(xForm1C.LoadOptions()) ;
       return of(options);
