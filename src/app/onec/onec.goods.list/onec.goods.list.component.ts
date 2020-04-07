@@ -166,7 +166,7 @@ export class OnecGoodsListComponent implements OnInit {
       this.allelements$ = this.store.pipe(select(selectGoodsByParent,{parentid:this.GetCurrentParent()})); 
     } else {
       // заменям пробелы \s* на любое количество любых сиволов (".*")
-      const reg:string  = '.*'+this.NameFilterValue.replace( /\s/g, ".*")+'.*';
+      const reg:string  = '.*'+this.NameFilterValue.toUpperCase().replace( /\s/g, ".*")+'.*';
       
       this.allelements$ = this.store.pipe(select(selectGoodByName,reg));
     }
