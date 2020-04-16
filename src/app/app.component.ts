@@ -105,7 +105,9 @@ export class AppComponent implements OnInit, OnDestroy {
         this.rtdb.SetOrderChiled(data1C.id,data1C.name,data1C.value);
         break;
       case "deleteorder" :
-        this.rtdb.RemoveOrder(data1C.id);
+        this.rtdb.RemoveOrder(data1C.id)
+        .then(res=> xForm1C.OnSucsessOrderRemove(data1C.id))
+        .catch(err=>xForm1C.OnErrorOrderRemove(data1C.id,JSON.stringify(err)));
         break;
       default:
         break;
