@@ -29,6 +29,7 @@ import { TelegramService } from './services/telegram.service';
 import { HttpClientModule } from '@angular/common/http';
 import { OrdersModule } from './orders/orders.module';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
+import { LoggModule } from './logg/logg.module';
 
 
 
@@ -67,7 +68,8 @@ import { AngularFireDatabaseModule } from '@angular/fire/database';
     WebModule,
     AuthModule,
     ExchangeModule,
-    OrdersModule
+    OrdersModule,
+    LoggModule
     
     
     

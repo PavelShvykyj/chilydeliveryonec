@@ -29,7 +29,7 @@ import { TelegramService } from '../services/telegram.service';
 })
 export class OrdersDatasourseService {
 
-  filial:string='luxor';
+  filial:string='empty';
  
 
   constructor(private db: AngularFireDatabase,
@@ -41,7 +41,7 @@ export class OrdersDatasourseService {
         this.filial=res;
         this.OdrdersChangesStop();
         this.OdrdersChangesStart();
-
+        this.ConnectionDetectStart();
       } );
      }
 
@@ -152,5 +152,25 @@ export class OrdersDatasourseService {
     this.db.database.ref('orders').off('child_added');
   }
 
+  ConnectionDetectStart() {
+    this.db.database.ref(".info/connected").on("value",this.OnConnectionStatusChanged.bind(this) );
+  }
+
+  OnConnectionStatusChanged(data: firebase.database.DataSnapshot) {
+    let Connected  =  {
+      'status':data.val(),
+      'filial':this.filial,
+      'date': new Date()
+    };
+
+    if(xForm1C == undefined)  {
+      //alert('ПОТЕРЯНА СВЯЗЬ С ИНТЕНЕТ И 1С ПЕРЕЗАГРУЗИТЕ ПРОГРАММУ!!!');
+    } else {
+      xForm1C.OnConnectionStatusChanged(JSON.stringify(Connected));
+    }
+
+    
+
+  }
 
 }
